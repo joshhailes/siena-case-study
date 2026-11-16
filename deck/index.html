@@ -1,0 +1,1136 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Siena Inbox: sales deck</title>
+<!--
+  Siena Inbox sales deck. Built in HTML with Claude Code (14 Nov 2026).
+  Every product screen is rebuilt in HTML from the Siena Inbox demo recording (William Chalons, Sept 2026),
+  using the demo workspace's own data (Tuscan Leather, Sarah Mitchell). Nothing on screen is invented.
+  Keys: ← → or space to move, N for AE notes, F for full screen. Print (Cmd+P, landscape, no margins) for a PDF.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Inter:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @font-face {
+    font-family: 'Feature Deck';
+    src: url('/fonts/FeatureDeck-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Feature Deck';
+    src: url('/fonts/FeatureDeck-LightItalic.woff2') format('woff2');
+    font-weight: 300;
+    font-style: italic;
+  }
+  @font-face {
+    font-family: 'Feature Deck';
+    src: url('/fonts/FeatureDeck-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Tiempos Text';
+    src: url('/fonts/TiemposText-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  :root {
+    --ink: #122023;
+    --ink-2: #41524f;
+    --mute: #8a948f;
+    --paper: #f3f0eb;
+    --cream: #efe5d0;
+    --butter: #f2e59a;
+    --coral: #f95040;
+    --sienna: #882d17;
+    --gold: #c9a24a;
+    --line: rgba(18, 32, 35, 0.1);
+    /* product UI */
+    --ui-bg: #ffffff;
+    --ui-soft: #f7f6f4;
+    --ui-line: #ebe9e6;
+    --ui-text: #1d1d1f;
+    --ui-mute: #8b8b8f;
+    --siena: #b03ab8;
+    --siena-bg: #f6e6f7;
+  }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  html,
+  body {
+    height: 100%;
+    background: #0c1416;
+  }
+  body {
+    font-family: 'Instrument Sans', system-ui, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;
+  }
+
+  /* ---------- stage ---------- */
+  .deck {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+  }
+  .slide {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 1920px;
+    height: 1080px;
+    transform-origin: 0 0;
+    background: var(--paper);
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+  .ready .slide {
+    transition: opacity 0.35s ease;
+  }
+  .slide.on {
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .slide.dark {
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+  /* ---------- chrome shared by every slide ---------- */
+  .foot {
+    position: absolute;
+    left: 56px;
+    right: 56px;
+    bottom: 56px;
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    font:
+      400 15px/1 'Instrument Sans',
+      sans-serif;
+    color: var(--mute);
+  }
+  .dark .foot {
+    color: rgba(239, 229, 208, 0.45);
+  }
+  .mark {
+    width: 84px;
+    height: 22px;
+    color: var(--ink);
+    flex: none;
+  }
+  .dark .mark {
+    color: var(--cream);
+  }
+  .foot .r {
+    margin-left: auto;
+    font:
+      500 14px/1 'Geist Mono',
+      monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h1,
+  h2 {
+    font-family: 'Feature Deck', serif;
+    font-weight: 300;
+    letter-spacing: -0.025em;
+  }
+  h1 em,
+  h2 em {
+    font-style: italic;
+  }
+  h2 {
+    font-size: 92px;
+    line-height: 0.98;
+  }
+  .sub {
+    font-size: 30px;
+    line-height: 1.35;
+    color: var(--ink-2);
+    letter-spacing: -0.01em;
+  }
+  .dark .sub {
+    color: rgba(239, 229, 208, 0.78);
+  }
+
+  /* ---------- product UI (rebuilt from the demo) ---------- */
+  .ui {
+    background: var(--ui-bg);
+    border-radius: 18px;
+    box-shadow:
+      0 0 0 1px rgba(18, 32, 35, 0.08),
+      0 30px 80px -30px rgba(18, 32, 35, 0.35);
+    font-family: Inter, system-ui, sans-serif;
+    color: var(--ui-text);
+    font-size: 17px;
+    line-height: 1.45;
+    overflow: hidden;
+    position: absolute;
+  }
+  .ui .bar {
+    height: 54px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 0 22px;
+    border-bottom: 1px solid var(--ui-line);
+    font-size: 15px;
+    color: var(--ui-mute);
+  }
+  .ui .bar b {
+    color: var(--ui-text);
+    font-weight: 600;
+    font-size: 16px;
+  }
+  .ui .bar .tools {
+    margin-left: auto;
+    display: flex;
+    gap: 22px;
+  }
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #e2a23b;
+    display: inline-block;
+  }
+  .dot.blue {
+    background: #3b7be2;
+  }
+  .av {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex: none;
+    background: #ddd;
+  }
+  .av.s {
+    display: grid;
+    place-items: center;
+    background: var(--ink);
+    color: #fff;
+    font:
+      600 15px Inter,
+      sans-serif;
+  }
+  .av.sm {
+    width: 22px;
+    height: 22px;
+    font-size: 11px;
+  }
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    border: 1px solid var(--ui-line);
+    font-size: 14px;
+    color: #444;
+    background: #fff;
+    white-space: nowrap;
+  }
+  .pill i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .pill.siena {
+    background: var(--siena-bg);
+    border-color: transparent;
+    color: var(--siena);
+    font-weight: 500;
+  }
+  .crown {
+    font-size: 14px;
+  }
+
+  .convs {
+    padding: 14px 22px 6px;
+    display: grid;
+    gap: 10px;
+    font-size: 15px;
+  }
+  .conv {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #555;
+  }
+  .conv b {
+    color: var(--ui-text);
+    font-weight: 600;
+  }
+  .conv .st {
+    color: var(--ui-mute);
+  }
+  .conv .t {
+    margin-left: auto;
+    color: #d24b3c;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .thread {
+    padding: 18px 28px;
+    display: grid;
+    gap: 20px;
+  }
+  .msg {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: 14px;
+  }
+  .msg .who {
+    font-weight: 600;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 16px;
+  }
+  .msg .who.siena {
+    color: #d24b3c;
+  }
+  .msg .who small {
+    font-weight: 400;
+    color: var(--ui-mute);
+    font-size: 14px;
+  }
+  .msg p {
+    margin-top: 3px;
+  }
+  .ev {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--ui-mute);
+  }
+  .ev b {
+    color: #555;
+    font-weight: 500;
+  }
+  .ev u {
+    text-decoration-color: #c8c8c8;
+    text-underline-offset: 3px;
+  }
+  .meta {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--ui-mute);
+  }
+  .reason {
+    margin-top: 10px;
+    font-size: 14px;
+    color: var(--ui-mute);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .reason ol {
+    margin-top: 8px;
+    padding-left: 22px;
+    text-transform: none;
+    letter-spacing: 0;
+    font-size: 15px;
+    display: grid;
+    gap: 4px;
+  }
+
+  .profile {
+    padding: 22px;
+    display: grid;
+    gap: 16px;
+    align-content: start;
+    font-size: 15px;
+  }
+  .profile .top {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .profile .top .av {
+    width: 50px;
+    height: 50px;
+  }
+  .profile .name {
+    font-family: 'Tiempos Text', Georgia, serif;
+    font-size: 22px;
+  }
+  .profile .line {
+    color: #555;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .box {
+    border: 1px solid var(--ui-line);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .box h4 {
+    font-family: 'Tiempos Text', Georgia, serif;
+    font-weight: 400;
+    font-size: 18px;
+    margin-bottom: 8px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .box p {
+    color: #444;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    color: #444;
+  }
+
+  .spark {
+    color: var(--siena);
+  }
+
+  /* highlight ring used to point at real UI */
+  .ring {
+    position: absolute;
+    border: 3px solid var(--gold);
+    border-radius: 14px;
+    box-shadow: 0 0 0 8px rgba(201, 162, 74, 0.18);
+    pointer-events: none;
+  }
+
+  /* ---------- slide specific ---------- */
+  /* 1 */
+  .slide.s1 {
+    background: var(--sienna);
+  } /* the name: sienna, the earth of Siena (ISCC–NBS #882D17) */
+  .s1 h1 {
+    position: absolute;
+    left: 56px;
+    top: 56px;
+    font-size: 168px;
+    line-height: 0.92;
+    max-width: 1500px;
+  }
+  .s1 h1 em {
+    color: inherit;
+  }
+  .s1 .sub {
+    position: absolute;
+    left: 60px;
+    bottom: 120px;
+    font-size: 36px;
+  }
+
+  /* 2 */
+  .s2 h2 {
+    position: absolute;
+    left: 56px;
+    top: 56px;
+    width: 1808px;
+  }
+  .s2 .flow {
+    position: absolute;
+    left: 56px;
+    right: 56px;
+    top: 406px;
+    display: grid;
+    grid-template-columns: 1fr 1.25fr 1.25fr;
+    gap: 28px;
+  }
+  .s2 .step {
+    background: #fff;
+    border-radius: 18px;
+    padding: 34px 34px 38px;
+    box-shadow: 0 0 0 1px var(--line);
+  }
+  .s2 .step .k {
+    font:
+      500 16px/1 'Geist Mono',
+      monospace;
+    letter-spacing: 0.12em;
+    color: var(--coral);
+    margin-bottom: 22px;
+  }
+  .s2 .step h3 {
+    font-family: 'Feature Deck', serif;
+    font-weight: 300;
+    font-size: 50px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 18px;
+  }
+  .s2 .step p {
+    font-size: 23px;
+    line-height: 1.4;
+    color: var(--ink-2);
+  }
+  .s2 .step.bad {
+    background: transparent;
+    box-shadow: inset 0 0 0 2px var(--coral);
+  }
+  .s2 .step.bad h3 {
+    color: var(--coral);
+  }
+
+  /* 3 */
+  .s3 h2 {
+    position: absolute;
+    left: 56px;
+    top: 56px;
+    width: 760px;
+    font-size: 84px;
+  }
+  .s3 .sub {
+    position: absolute;
+    left: 56px;
+    top: 446px;
+    width: 640px;
+  }
+  .s3 .ui {
+    left: 944px;
+    top: 56px;
+    width: 920px;
+    height: 720px;
+    display: grid;
+    grid-template-columns: 1fr 310px;
+    font-size: 16px;
+  }
+  .s3 .profile .box p {
+    font-size: 14px;
+  }
+  .s3 .convs {
+    font-size: 13.5px;
+  }
+  .s3 .conv {
+    white-space: nowrap;
+    gap: 8px;
+  }
+  .s3 .conv .pill {
+    font-size: 12.5px;
+    padding: 1px 8px;
+  }
+  .s3 .keys {
+    position: absolute;
+    left: 56px;
+    top: 646px;
+    display: grid;
+    gap: 16px;
+    font-size: 24px;
+  }
+  .s3 .keys div {
+    display: flex;
+    gap: 18px;
+    align-items: baseline;
+  }
+  .s3 .keys span {
+    font:
+      500 17px 'Geist Mono',
+      monospace;
+    color: var(--coral);
+  }
+
+  /* 4–7 share a layout: copy left, UI right */
+  .split h2 {
+    position: absolute;
+    left: 56px;
+    top: 56px;
+    width: 700px;
+    font-size: 80px;
+  }
+  .split .sub {
+    position: absolute;
+    left: 56px;
+    width: 640px;
+    font-size: 27px;
+  }
+  .split .pts {
+    position: absolute;
+    left: 56px;
+    width: 640px;
+    display: grid;
+    gap: 22px;
+  }
+  .split .pts div {
+    font-size: 23px;
+    line-height: 1.4;
+    color: var(--ink-2);
+    padding-left: 26px;
+    position: relative;
+  }
+  .split .pts div::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 14px;
+    width: 12px;
+    height: 2px;
+    background: var(--coral);
+  }
+  .split .pts b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+  .dark.split .pts div {
+    color: rgba(239, 229, 208, 0.78);
+  }
+  .dark.split .pts b {
+    color: var(--cream);
+  }
+
+  .s4 .ui {
+    left: 944px;
+    top: 56px;
+    width: 920px;
+    height: 800px;
+    display: grid;
+    grid-template-columns: 1fr 390px;
+  }
+  .s5 .ui {
+    left: 944px;
+    top: 56px;
+    width: 920px;
+  }
+  .s6 .ui {
+    left: 944px;
+    top: 56px;
+    width: 920px;
+  }
+  .s6 .reason {
+    border: 2px solid var(--gold);
+    box-shadow: 0 0 0 6px rgba(201, 162, 74, 0.16);
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: #8a6d2a;
+  }
+  .s6 .reason ol {
+    color: #444;
+  }
+  .s7 .ui {
+    left: 944px;
+    top: 56px;
+    width: 920px;
+  }
+
+  /* 8 */
+  .s8 h2 {
+    position: absolute;
+    left: 56px;
+    top: 56px;
+    font-size: 84px;
+  }
+  .s8 table {
+    position: absolute;
+    left: 56px;
+    right: 56px;
+    top: 246px;
+    width: calc(100% - 112px);
+    border-collapse: collapse;
+    font-size: 25px;
+    line-height: 1.35;
+  }
+  .s8 th {
+    text-align: left;
+    font:
+      500 16px/1 'Geist Mono',
+      monospace;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mute);
+    padding: 0 0 20px;
+  }
+  .s8 th:last-child {
+    color: var(--coral);
+  }
+  .s8 td {
+    padding: 24px 32px 24px 0;
+    border-top: 1px solid var(--line);
+    vertical-align: top;
+  }
+  .s8 td:first-child {
+    font-weight: 600;
+    width: 22%;
+  }
+  .s8 td:nth-child(2) {
+    color: var(--mute);
+    width: 34%;
+  }
+  .s8 td:last-child {
+    font-family: 'Feature Deck', serif;
+    font-weight: 300;
+    font-size: 33px;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+
+  /* 9 */
+  .s9 h2 {
+    position: absolute;
+    left: 56px;
+    top: 56px;
+    font-size: 128px;
+    line-height: 0.95;
+  }
+  .s9 h2 em {
+    color: inherit;
+  }
+  .s9 .steps {
+    position: absolute;
+    left: 56px;
+    top: 446px;
+    display: grid;
+    grid-template-columns: repeat(3, 440px);
+    gap: 40px;
+  }
+  .s9 .steps div {
+    border-top: 1px solid rgba(239, 229, 208, 0.25);
+    padding-top: 24px;
+    font-size: 25px;
+    line-height: 1.4;
+    color: rgba(239, 229, 208, 0.82);
+  }
+  .s9 .steps span {
+    display: block;
+    font:
+      500 16px 'Geist Mono',
+      monospace;
+    letter-spacing: 0.12em;
+    color: var(--coral);
+    margin-bottom: 14px;
+  }
+  .s9 .price {
+    position: absolute;
+    left: 56px;
+    top: 706px;
+    font-family: 'Feature Deck', serif;
+    font-weight: 300;
+    font-size: 44px;
+    letter-spacing: -0.01em;
+  }
+  .s9 .price em {
+    font-style: italic;
+    color: inherit;
+  }
+
+  /* ---------- AE notes ---------- */
+  .notes {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 38vh;
+    overflow: auto;
+    background: #fffdf8;
+    color: var(--ink);
+    font:
+      16px/1.5 'Instrument Sans',
+      sans-serif;
+    padding: 18px 28px 22px;
+    box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.25);
+    display: none;
+    z-index: 5;
+  }
+  .notes.on {
+    display: block;
+  }
+  .notes h5 {
+    font:
+      500 12px 'Geist Mono',
+      monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--coral);
+    margin-bottom: 6px;
+  }
+  .notes p {
+    max-width: 1100px;
+    margin-bottom: 6px;
+  }
+  aside.n {
+    display: none;
+  }
+  .hud {
+    position: fixed;
+    right: 16px;
+    bottom: 14px;
+    font:
+      12px 'Geist Mono',
+      monospace;
+    color: rgba(255, 255, 255, 0.45);
+    z-index: 4;
+  }
+
+  /* ?pdf: every slide stacked at full size, for the PDF export */
+  .pdf,
+  .pdf body {
+    overflow: visible;
+    height: auto;
+    background: none;
+  }
+  .pdf .deck {
+    position: static;
+    display: block;
+  }
+  .pdf .slide {
+    position: relative;
+    left: 0;
+    top: 0;
+    transform: none !important;
+    opacity: 1;
+    transition: none;
+  }
+  .pdf .notes,
+  .pdf .hud {
+    display: none !important;
+  }
+
+  @media print {
+    @page {
+      size: 1920px 1080px;
+      margin: 0;
+    }
+    html,
+    body {
+      background: none;
+      overflow: visible;
+      height: auto;
+    }
+    .deck {
+      position: static;
+      display: block;
+    }
+    .slide {
+      position: relative;
+      left: 0;
+      top: 0;
+      transform: none !important;
+      opacity: 1;
+      page-break-after: always;
+      break-after: page;
+    }
+    .notes,
+    .hud {
+      display: none !important;
+    }
+    * {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+<!-- 1 · Title -->
+<section class="slide dark s1">
+  <h1>“I’d like to speak to<br><em>an agent.</em>”</h1>
+  <p class="sub">Siena Inbox: your team and Siena, working from one inbox.</p>
+  <div class="foot"><svg class="mark" aria-label="siena" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120.976 31.324" fill="currentColor"><path id="w" d="M 12.122 31.246 C 9.894 31.246 7.736 30.979 5.649 30.445 C 3.575 29.911 1.692 29.129 0 28.1 L 0 22.882 C 1.551 23.977 3.343 24.823 5.373 25.423 C 7.419 26.022 9.471 26.322 11.53 26.322 C 13.081 26.322 14.252 26.107 15.042 25.677 C 15.831 25.247 16.226 24.654 16.226 23.899 C 16.226 23.351 16.022 22.876 15.613 22.472 C 15.218 22.055 14.442 21.71 13.286 21.436 L 7.764 20.225 C 5.056 19.613 3.103 18.759 1.904 17.665 C 0.719 16.571 0.127 15.203 0.127 13.561 C 0.127 12.154 0.599 10.917 1.544 9.849 C 2.503 8.78 3.871 7.953 5.649 7.367 C 7.44 6.768 9.534 6.468 11.932 6.468 C 14.104 6.468 16.078 6.703 17.855 7.172 C 19.632 7.627 21.163 8.24 22.446 9.008 L 22.446 14.05 C 21.148 13.229 19.66 12.578 17.982 12.096 C 16.304 11.601 14.52 11.353 12.63 11.353 C 10.951 11.353 9.696 11.549 8.864 11.939 C 8.032 12.317 7.616 12.851 7.616 13.542 C 7.616 14.115 7.898 14.571 8.462 14.91 C 9.04 15.248 9.992 15.555 11.318 15.828 L 16.269 16.825 C 18.751 17.294 20.634 18.069 21.917 19.15 C 23.2 20.231 23.842 21.749 23.842 23.703 C 23.842 25.201 23.377 26.523 22.446 27.67 C 21.529 28.803 20.189 29.683 18.426 30.308 C 16.663 30.933 14.562 31.246 12.122 31.246 Z M 30.096 6.409 C 29.278 6.409 28.544 6.273 27.896 5.999 C 27.247 5.712 26.739 5.322 26.372 4.827 C 26.006 4.332 25.822 3.778 25.822 3.166 C 25.822 2.566 26.006 2.026 26.372 1.544 C 26.753 1.062 27.268 0.684 27.917 0.41 C 28.566 0.137 29.292 0 30.096 0 C 30.886 0 31.598 0.137 32.232 0.41 C 32.867 0.684 33.361 1.062 33.713 1.544 C 34.08 2.026 34.263 2.566 34.263 3.166 C 34.263 3.778 34.08 4.332 33.713 4.827 C 33.361 5.322 32.867 5.712 32.232 5.999 C 31.598 6.273 30.886 6.409 30.096 6.409 Z M 26.372 8.227 L 33.735 8.227 L 33.735 30.542 L 26.372 30.542 Z M 63.661 20.049 L 43.69 20.049 C 44.099 21.86 45.143 23.267 46.821 24.27 C 48.5 25.26 50.707 25.755 53.443 25.755 C 55.248 25.755 56.934 25.507 58.499 25.012 C 60.079 24.517 61.517 23.84 62.815 22.98 L 62.815 28.256 C 61.475 29.168 59.825 29.898 57.864 30.445 C 55.918 30.979 53.887 31.246 51.772 31.246 C 48.683 31.246 45.975 30.718 43.648 29.663 C 41.321 28.608 39.523 27.129 38.253 25.227 C 36.998 23.325 36.37 21.143 36.37 18.681 C 36.37 16.388 36.942 14.317 38.084 12.467 C 39.241 10.617 40.898 9.158 43.056 8.09 C 45.228 7.009 47.773 6.468 50.693 6.468 C 53.471 6.468 55.826 6.917 57.759 7.816 C 59.705 8.702 61.172 9.979 62.159 11.646 C 63.16 13.301 63.661 15.281 63.661 17.587 Z M 50.862 11.744 C 48.93 11.744 47.357 12.174 46.144 13.034 C 44.931 13.881 44.156 15.02 43.817 16.453 L 57.441 16.453 C 57.286 14.942 56.637 13.783 55.495 12.975 C 54.367 12.154 52.822 11.744 50.862 11.744 Z M 83.433 6.468 C 85.619 6.468 87.474 6.898 88.997 7.758 C 90.52 8.605 91.677 9.855 92.466 11.51 C 93.27 13.151 93.672 15.151 93.672 17.509 L 93.672 30.542 L 86.31 30.542 L 86.31 19.013 C 86.31 16.734 85.817 15.033 84.829 13.913 C 83.842 12.78 82.347 12.213 80.344 12.213 C 78.92 12.213 77.707 12.487 76.706 13.034 C 75.718 13.581 74.971 14.356 74.463 15.359 C 73.969 16.362 73.723 17.528 73.723 18.857 L 73.723 30.542 L 66.382 30.542 L 66.382 7.426 L 73.68 7.426 L 73.68 12.682 C 74.569 10.585 75.817 9.028 77.425 8.012 C 79.033 6.983 81.035 6.468 83.433 6.468 Z M 107.69 6.468 C 110.469 6.468 112.852 6.911 114.841 7.797 C 116.83 8.683 118.346 9.985 119.389 11.705 C 120.447 13.425 120.976 15.515 120.976 17.978 L 120.976 30.542 L 113.783 30.542 L 113.783 27.416 C 112.923 28.706 111.752 29.683 110.271 30.347 C 108.805 30.998 107.091 31.324 105.131 31.324 C 103.297 31.324 101.689 30.992 100.307 30.327 C 98.924 29.663 97.853 28.758 97.091 27.611 C 96.343 26.452 95.97 25.156 95.97 23.723 C 95.97 22.277 96.358 20.987 97.133 19.854 C 97.923 18.707 99.037 17.815 100.476 17.176 C 101.929 16.525 103.607 16.199 105.511 16.199 C 109.192 16.199 111.943 17.307 113.762 19.521 L 113.762 18.583 C 113.734 17.15 113.367 15.945 112.662 14.968 C 111.957 13.991 110.991 13.262 109.764 12.78 C 108.551 12.285 107.147 12.037 105.554 12.037 C 102.324 12.037 99.559 13.06 97.26 15.105 L 97.26 9.477 C 100.222 7.471 103.699 6.468 107.69 6.468 Z M 108.05 26.986 C 109.15 26.986 110.13 26.83 110.991 26.517 C 111.865 26.204 112.549 25.768 113.043 25.208 C 113.536 24.648 113.783 24.022 113.783 23.332 C 113.783 22.667 113.55 22.075 113.085 21.554 C 112.62 21.019 111.957 20.603 111.096 20.303 C 110.25 20.003 109.27 19.854 108.156 19.854 C 107.07 19.854 106.132 20.003 105.342 20.303 C 104.552 20.603 103.946 21.019 103.523 21.554 C 103.114 22.088 102.909 22.7 102.909 23.39 C 102.909 24.094 103.114 24.719 103.523 25.266 C 103.932 25.814 104.524 26.237 105.3 26.537 C 106.075 26.836 106.992 26.986 108.05 26.986 Z"/></svg><span>Confidential · © Siena Labs Inc.</span><span class="r">Early look</span></div>
+  <aside class="n">
+    <p>Customers type this into chatbots all the time. With Inbox, “an agent” can be Siena or someone on your team, and the customer doesn’t have to care which.</p>
+    <p>Then say: “You already use Siena to answer customers. This is about the conversations she hands to your team.”</p>
+  </aside>
+</section>
+
+<!-- 2 · Today -->
+<section class="slide s2">
+  <h2>Siena already answers most of your customers. <em>The handoff is where it breaks.</em></h2>
+  <div class="flow">
+    <div class="step"><div class="k">01</div><h3>They write in everywhere.</h3><p>The same person might DM you on Instagram and open a live chat on the same day.</p></div>
+    <div class="step"><div class="k">02</div><h3>Siena answers most of it.</h3><p>She resolves most conversations on her own today.</p></div>
+    <div class="step bad"><div class="k">03</div><h3>The rest goes to a ticket.</h3><p>It lands in your help desk without Siena’s reasoning, so your agent starts from scratch and the customer explains it again.</p></div>
+  </div>
+  <div class="foot"><svg class="mark" aria-label="siena" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120.976 31.324" fill="currentColor"><path id="w" d="M 12.122 31.246 C 9.894 31.246 7.736 30.979 5.649 30.445 C 3.575 29.911 1.692 29.129 0 28.1 L 0 22.882 C 1.551 23.977 3.343 24.823 5.373 25.423 C 7.419 26.022 9.471 26.322 11.53 26.322 C 13.081 26.322 14.252 26.107 15.042 25.677 C 15.831 25.247 16.226 24.654 16.226 23.899 C 16.226 23.351 16.022 22.876 15.613 22.472 C 15.218 22.055 14.442 21.71 13.286 21.436 L 7.764 20.225 C 5.056 19.613 3.103 18.759 1.904 17.665 C 0.719 16.571 0.127 15.203 0.127 13.561 C 0.127 12.154 0.599 10.917 1.544 9.849 C 2.503 8.78 3.871 7.953 5.649 7.367 C 7.44 6.768 9.534 6.468 11.932 6.468 C 14.104 6.468 16.078 6.703 17.855 7.172 C 19.632 7.627 21.163 8.24 22.446 9.008 L 22.446 14.05 C 21.148 13.229 19.66 12.578 17.982 12.096 C 16.304 11.601 14.52 11.353 12.63 11.353 C 10.951 11.353 9.696 11.549 8.864 11.939 C 8.032 12.317 7.616 12.851 7.616 13.542 C 7.616 14.115 7.898 14.571 8.462 14.91 C 9.04 15.248 9.992 15.555 11.318 15.828 L 16.269 16.825 C 18.751 17.294 20.634 18.069 21.917 19.15 C 23.2 20.231 23.842 21.749 23.842 23.703 C 23.842 25.201 23.377 26.523 22.446 27.67 C 21.529 28.803 20.189 29.683 18.426 30.308 C 16.663 30.933 14.562 31.246 12.122 31.246 Z M 30.096 6.409 C 29.278 6.409 28.544 6.273 27.896 5.999 C 27.247 5.712 26.739 5.322 26.372 4.827 C 26.006 4.332 25.822 3.778 25.822 3.166 C 25.822 2.566 26.006 2.026 26.372 1.544 C 26.753 1.062 27.268 0.684 27.917 0.41 C 28.566 0.137 29.292 0 30.096 0 C 30.886 0 31.598 0.137 32.232 0.41 C 32.867 0.684 33.361 1.062 33.713 1.544 C 34.08 2.026 34.263 2.566 34.263 3.166 C 34.263 3.778 34.08 4.332 33.713 4.827 C 33.361 5.322 32.867 5.712 32.232 5.999 C 31.598 6.273 30.886 6.409 30.096 6.409 Z M 26.372 8.227 L 33.735 8.227 L 33.735 30.542 L 26.372 30.542 Z M 63.661 20.049 L 43.69 20.049 C 44.099 21.86 45.143 23.267 46.821 24.27 C 48.5 25.26 50.707 25.755 53.443 25.755 C 55.248 25.755 56.934 25.507 58.499 25.012 C 60.079 24.517 61.517 23.84 62.815 22.98 L 62.815 28.256 C 61.475 29.168 59.825 29.898 57.864 30.445 C 55.918 30.979 53.887 31.246 51.772 31.246 C 48.683 31.246 45.975 30.718 43.648 29.663 C 41.321 28.608 39.523 27.129 38.253 25.227 C 36.998 23.325 36.37 21.143 36.37 18.681 C 36.37 16.388 36.942 14.317 38.084 12.467 C 39.241 10.617 40.898 9.158 43.056 8.09 C 45.228 7.009 47.773 6.468 50.693 6.468 C 53.471 6.468 55.826 6.917 57.759 7.816 C 59.705 8.702 61.172 9.979 62.159 11.646 C 63.16 13.301 63.661 15.281 63.661 17.587 Z M 50.862 11.744 C 48.93 11.744 47.357 12.174 46.144 13.034 C 44.931 13.881 44.156 15.02 43.817 16.453 L 57.441 16.453 C 57.286 14.942 56.637 13.783 55.495 12.975 C 54.367 12.154 52.822 11.744 50.862 11.744 Z M 83.433 6.468 C 85.619 6.468 87.474 6.898 88.997 7.758 C 90.52 8.605 91.677 9.855 92.466 11.51 C 93.27 13.151 93.672 15.151 93.672 17.509 L 93.672 30.542 L 86.31 30.542 L 86.31 19.013 C 86.31 16.734 85.817 15.033 84.829 13.913 C 83.842 12.78 82.347 12.213 80.344 12.213 C 78.92 12.213 77.707 12.487 76.706 13.034 C 75.718 13.581 74.971 14.356 74.463 15.359 C 73.969 16.362 73.723 17.528 73.723 18.857 L 73.723 30.542 L 66.382 30.542 L 66.382 7.426 L 73.68 7.426 L 73.68 12.682 C 74.569 10.585 75.817 9.028 77.425 8.012 C 79.033 6.983 81.035 6.468 83.433 6.468 Z M 107.69 6.468 C 110.469 6.468 112.852 6.911 114.841 7.797 C 116.83 8.683 118.346 9.985 119.389 11.705 C 120.447 13.425 120.976 15.515 120.976 17.978 L 120.976 30.542 L 113.783 30.542 L 113.783 27.416 C 112.923 28.706 111.752 29.683 110.271 30.347 C 108.805 30.998 107.091 31.324 105.131 31.324 C 103.297 31.324 101.689 30.992 100.307 30.327 C 98.924 29.663 97.853 28.758 97.091 27.611 C 96.343 26.452 95.97 25.156 95.97 23.723 C 95.97 22.277 96.358 20.987 97.133 19.854 C 97.923 18.707 99.037 17.815 100.476 17.176 C 101.929 16.525 103.607 16.199 105.511 16.199 C 109.192 16.199 111.943 17.307 113.762 19.521 L 113.762 18.583 C 113.734 17.15 113.367 15.945 112.662 14.968 C 111.957 13.991 110.991 13.262 109.764 12.78 C 108.551 12.285 107.147 12.037 105.554 12.037 C 102.324 12.037 99.559 13.06 97.26 15.105 L 97.26 9.477 C 100.222 7.471 103.699 6.468 107.69 6.468 Z M 108.05 26.986 C 109.15 26.986 110.13 26.83 110.991 26.517 C 111.865 26.204 112.549 25.768 113.043 25.208 C 113.536 24.648 113.783 24.022 113.783 23.332 C 113.783 22.667 113.55 22.075 113.085 21.554 C 112.62 21.019 111.957 20.603 111.096 20.303 C 110.25 20.003 109.27 19.854 108.156 19.854 C 107.07 19.854 106.132 20.003 105.342 20.303 C 104.552 20.603 103.946 21.019 103.523 21.554 C 103.114 22.088 102.909 22.7 102.909 23.39 C 102.909 24.094 103.114 24.719 103.523 25.266 C 103.932 25.814 104.524 26.237 105.3 26.537 C 106.075 26.836 106.992 26.986 108.05 26.986 Z"/></svg><span>Confidential · © Siena Labs Inc.</span><span class="r">02</span></div>
+  <aside class="n">
+    <p>Ask: “When Siena hands a conversation over today, what does your agent see?” Let them answer. It’s usually a ticket in Zendesk or Gorgias and a lot of scrolling.</p>
+    <p>Don’t quote an automation rate here unless it’s theirs. Use their own number from the account if you have it.</p>
+  </aside>
+</section>
+
+<!-- 3 · What Inbox is -->
+<section class="slide s3">
+  <h2>The help desk, rebuilt so your team works <em>where Siena works.</em></h2>
+  <p class="sub">Your team and Siena work the same conversation, from the same memory of each customer, and pass it back and forth without losing anything.</p>
+  <div class="keys">
+    <div><span>01</span>The customer, not the ticket</div>
+    <div><span>02</span>Siena hands over a decision</div>
+    <div><span>03</span>Every step explained</div>
+    <div><span>04</span>Set up in plain English</div>
+  </div>
+  <div class="ui">
+    <div>
+      <div class="bar"><span class="dot blue"></span><b>Possible double charge</b><span class="tools"><span>Arrange</span><span>Status</span><span>Assignee</span><span>Label</span></span></div>
+      <div class="convs">
+        <div class="conv"><span class="dot"></span><span>✉</span><b>Restock timing</b><span class="st">Pending</span><span class="pill siena">Siena</span><span class="pill"><i style="background:#b03ab8"></i>VIP</span><span class="pill"><i style="background:#888"></i>Follow-up</span></div>
+        <div class="conv"><span class="dot"></span><span>◎</span><b>Sizing restock follow-up</b><span class="st">Pending</span><span class="pill siena">Siena</span></div>
+        <div class="conv"><span class="dot blue"></span><span>▢</span><b>Possible double charge</b><span class="st">Open</span><span class="pill">LC&nbsp;Lisa Chen</span><span class="pill"><i style="background:#e2a23b"></i>Billing</span><span class="pill"><i style="background:#d24b3c"></i>Urgent</span><span class="t">9m 41s</span></div>
+      </div>
+      <div class="thread">
+        <div class="msg"><img class="av" src="/deck/img/sarah.jpg" alt=""><div><div class="who">Sarah Mitchell <span class="crown">👑</span></div><p>Hi, I think I’ve been charged twice for order #12847. There are two identical charges on my card from the same day.</p></div></div>
+        <div class="msg"><div class="av s">S</div><div><div class="who siena">Siena <span class="pill siena">Siena</span></div><p>Hi Sarah, thanks for flagging it. I can see order #12847 with one settled payment against it, so the second is most likely an authorisation that hasn’t dropped off yet. I don’t want to tell you your money is safe without someone reading the payment record properly, so I’m bringing in Lisa from our billing team now. She has everything above, so you won’t need to explain it again.</p>
+          <div class="meta"><span class="pill">Order #12847 payment</span><span>+1</span></div>
+          <div class="meta"><span>›&nbsp; REASONING</span></div>
+          <div class="meta"><span>Assigned to ✓</span></div></div></div>
+        <div class="msg"><img class="av" src="/deck/img/sarah.jpg" alt=""><div><div class="who">Sarah Mitchell <span class="crown">👑</span></div><p>Thank you, I’d rather be sure. I’ll wait to hear from her.</p></div></div>
+      </div>
+    </div>
+    <div class="profile" style="border-left:1px solid var(--ui-line)">
+      <div class="top"><img class="av" src="/deck/img/sarah.jpg" alt=""><span class="name">Sarah Mitchell</span></div>
+      <div class="line">✉ sarah.mitchell@gmail.com</div>
+      <div class="line">◎ Instagram @sarahmitchell 👑</div>
+      <div class="line" style="color:var(--ui-mute)">12.4K followers · 847 posts</div>
+      <div class="box"><h4><span class="spark">✦</span> Customer Intelligence</h4><p>Sarah is a high-value customer who has been shopping with us for over 2 years. She prefers premium products and responds well to personalized recommendations. Recently showed interest in subscription services and eco-friendly packaging options.</p></div>
+      <div class="box row"><span>Conversations</span><span>10</span></div>
+      <div class="box row"><span>Memories</span><span>5</span></div>
+    </div>
+  </div>
+  <div class="foot"><svg class="mark" aria-label="siena" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120.976 31.324" fill="currentColor"><path id="w" d="M 12.122 31.246 C 9.894 31.246 7.736 30.979 5.649 30.445 C 3.575 29.911 1.692 29.129 0 28.1 L 0 22.882 C 1.551 23.977 3.343 24.823 5.373 25.423 C 7.419 26.022 9.471 26.322 11.53 26.322 C 13.081 26.322 14.252 26.107 15.042 25.677 C 15.831 25.247 16.226 24.654 16.226 23.899 C 16.226 23.351 16.022 22.876 15.613 22.472 C 15.218 22.055 14.442 21.71 13.286 21.436 L 7.764 20.225 C 5.056 19.613 3.103 18.759 1.904 17.665 C 0.719 16.571 0.127 15.203 0.127 13.561 C 0.127 12.154 0.599 10.917 1.544 9.849 C 2.503 8.78 3.871 7.953 5.649 7.367 C 7.44 6.768 9.534 6.468 11.932 6.468 C 14.104 6.468 16.078 6.703 17.855 7.172 C 19.632 7.627 21.163 8.24 22.446 9.008 L 22.446 14.05 C 21.148 13.229 19.66 12.578 17.982 12.096 C 16.304 11.601 14.52 11.353 12.63 11.353 C 10.951 11.353 9.696 11.549 8.864 11.939 C 8.032 12.317 7.616 12.851 7.616 13.542 C 7.616 14.115 7.898 14.571 8.462 14.91 C 9.04 15.248 9.992 15.555 11.318 15.828 L 16.269 16.825 C 18.751 17.294 20.634 18.069 21.917 19.15 C 23.2 20.231 23.842 21.749 23.842 23.703 C 23.842 25.201 23.377 26.523 22.446 27.67 C 21.529 28.803 20.189 29.683 18.426 30.308 C 16.663 30.933 14.562 31.246 12.122 31.246 Z M 30.096 6.409 C 29.278 6.409 28.544 6.273 27.896 5.999 C 27.247 5.712 26.739 5.322 26.372 4.827 C 26.006 4.332 25.822 3.778 25.822 3.166 C 25.822 2.566 26.006 2.026 26.372 1.544 C 26.753 1.062 27.268 0.684 27.917 0.41 C 28.566 0.137 29.292 0 30.096 0 C 30.886 0 31.598 0.137 32.232 0.41 C 32.867 0.684 33.361 1.062 33.713 1.544 C 34.08 2.026 34.263 2.566 34.263 3.166 C 34.263 3.778 34.08 4.332 33.713 4.827 C 33.361 5.322 32.867 5.712 32.232 5.999 C 31.598 6.273 30.886 6.409 30.096 6.409 Z M 26.372 8.227 L 33.735 8.227 L 33.735 30.542 L 26.372 30.542 Z M 63.661 20.049 L 43.69 20.049 C 44.099 21.86 45.143 23.267 46.821 24.27 C 48.5 25.26 50.707 25.755 53.443 25.755 C 55.248 25.755 56.934 25.507 58.499 25.012 C 60.079 24.517 61.517 23.84 62.815 22.98 L 62.815 28.256 C 61.475 29.168 59.825 29.898 57.864 30.445 C 55.918 30.979 53.887 31.246 51.772 31.246 C 48.683 31.246 45.975 30.718 43.648 29.663 C 41.321 28.608 39.523 27.129 38.253 25.227 C 36.998 23.325 36.37 21.143 36.37 18.681 C 36.37 16.388 36.942 14.317 38.084 12.467 C 39.241 10.617 40.898 9.158 43.056 8.09 C 45.228 7.009 47.773 6.468 50.693 6.468 C 53.471 6.468 55.826 6.917 57.759 7.816 C 59.705 8.702 61.172 9.979 62.159 11.646 C 63.16 13.301 63.661 15.281 63.661 17.587 Z M 50.862 11.744 C 48.93 11.744 47.357 12.174 46.144 13.034 C 44.931 13.881 44.156 15.02 43.817 16.453 L 57.441 16.453 C 57.286 14.942 56.637 13.783 55.495 12.975 C 54.367 12.154 52.822 11.744 50.862 11.744 Z M 83.433 6.468 C 85.619 6.468 87.474 6.898 88.997 7.758 C 90.52 8.605 91.677 9.855 92.466 11.51 C 93.27 13.151 93.672 15.151 93.672 17.509 L 93.672 30.542 L 86.31 30.542 L 86.31 19.013 C 86.31 16.734 85.817 15.033 84.829 13.913 C 83.842 12.78 82.347 12.213 80.344 12.213 C 78.92 12.213 77.707 12.487 76.706 13.034 C 75.718 13.581 74.971 14.356 74.463 15.359 C 73.969 16.362 73.723 17.528 73.723 18.857 L 73.723 30.542 L 66.382 30.542 L 66.382 7.426 L 73.68 7.426 L 73.68 12.682 C 74.569 10.585 75.817 9.028 77.425 8.012 C 79.033 6.983 81.035 6.468 83.433 6.468 Z M 107.69 6.468 C 110.469 6.468 112.852 6.911 114.841 7.797 C 116.83 8.683 118.346 9.985 119.389 11.705 C 120.447 13.425 120.976 15.515 120.976 17.978 L 120.976 30.542 L 113.783 30.542 L 113.783 27.416 C 112.923 28.706 111.752 29.683 110.271 30.347 C 108.805 30.998 107.091 31.324 105.131 31.324 C 103.297 31.324 101.689 30.992 100.307 30.327 C 98.924 29.663 97.853 28.758 97.091 27.611 C 96.343 26.452 95.97 25.156 95.97 23.723 C 95.97 22.277 96.358 20.987 97.133 19.854 C 97.923 18.707 99.037 17.815 100.476 17.176 C 101.929 16.525 103.607 16.199 105.511 16.199 C 109.192 16.199 111.943 17.307 113.762 19.521 L 113.762 18.583 C 113.734 17.15 113.367 15.945 112.662 14.968 C 111.957 13.991 110.991 13.262 109.764 12.78 C 108.551 12.285 107.147 12.037 105.554 12.037 C 102.324 12.037 99.559 13.06 97.26 15.105 L 97.26 9.477 C 100.222 7.471 103.699 6.468 107.69 6.468 Z M 108.05 26.986 C 109.15 26.986 110.13 26.83 110.991 26.517 C 111.865 26.204 112.549 25.768 113.043 25.208 C 113.536 24.648 113.783 24.022 113.783 23.332 C 113.783 22.667 113.55 22.075 113.085 21.554 C 112.62 21.019 111.957 20.603 111.096 20.303 C 110.25 20.003 109.27 19.854 108.156 19.854 C 107.07 19.854 106.132 20.003 105.342 20.303 C 104.552 20.603 103.946 21.019 103.523 21.554 C 103.114 22.088 102.909 22.7 102.909 23.39 C 102.909 24.094 103.114 24.719 103.523 25.266 C 103.932 25.814 104.524 26.237 105.3 26.537 C 106.075 26.836 106.992 26.986 108.05 26.986 Z"/></svg><span>Confidential · © Siena Labs Inc.</span><span class="r">03</span></div>
+  <aside class="n">
+    <p>This screen shows the whole product. From left to right: every conversation Sarah has had, the one that needs a person, and everything Siena knows about her.</p>
+    <p>Name it once: “This is Siena Inbox. It’s where your team works now, alongside Siena.” Then go through the four points, one slide each.</p>
+  </aside>
+</section>
+
+<!-- 4 · The customer is the root -->
+<section class="slide split s4">
+  <h2>Every channel, on <em>one customer’s timeline.</em></h2>
+  <div class="pts" style="top:356px">
+    <div><b>Email, Instagram and live chat</b> land on the same profile, in one timeline.</div>
+    <div><b>Duplicate identities merge on their own</b> when a new email or handle links them.</div>
+    <div><b>Orders, memories and Siena’s summary</b> sit next to every conversation, so your agent knows who they’re talking to before they type.</div>
+  </div>
+  <div class="ui">
+    <div>
+      <div class="bar"><b>Sarah Mitchell</b><span>· 10 conversations</span></div>
+      <div class="convs" style="gap:16px;padding-top:22px">
+        <div class="conv"><span class="dot"></span><span>✉</span><b>Restock timing</b><span class="st">Pending</span><span class="pill siena">Siena</span></div>
+        <div class="conv"><span class="dot"></span><span>◎</span><b>Sizing restock follow-up</b><span class="st">Pending</span><span class="pill siena">Siena</span></div>
+        <div class="conv"><span class="dot blue"></span><span>▢</span><b>Possible double charge</b><span class="st">Open</span><span class="pill">Lisa Chen</span></div>
+      </div>
+      <div class="thread" style="gap:14px">
+        <div class="ev">◎ Instagram DM · Siena · 3:08 PM</div>
+        <div class="msg"><div class="av s">S</div><div><div class="who siena">Siena <span class="pill siena">Siena</span></div><p>Hi Sarah! 👋 We saw your comment on our summer collection post asking about sizing, wanted to follow up personally: the medium just restocked and I’ve set one aside for you 💜</p></div></div>
+        <div class="msg"><img class="av" src="/deck/img/sarah.jpg" alt=""><div><div class="who">Sarah Mitchell <span class="crown">👑</span></div><p>Omg yes please!! 😍 I was so bummed it was sold out. Thank you for reaching out!</p></div></div>
+        <div class="ev">▢ Live chat · Sarah Mitchell · 9m ago</div>
+        <div class="msg"><img class="av" src="/deck/img/sarah.jpg" alt=""><div><div class="who">Sarah Mitchell <span class="crown">👑</span></div><p>Hi, I think I’ve been charged twice for order #12847. There are two identical charges on my card from the same day.</p></div></div>
+        <div class="msg"><div class="av s">S</div><div><div class="who siena">Siena <span class="pill siena">Siena</span></div><p>…I’m bringing in Lisa from our billing team now. She has everything above, so you won’t need to explain it again.</p></div></div>
+      </div>
+    </div>
+    <div class="profile" style="border-left:1px solid var(--ui-line);background:var(--ui-soft)">
+      <div class="top"><img class="av" src="/deck/img/sarah.jpg" alt=""><span class="name">Sarah Mitchell</span></div>
+      <div class="line">✉ sarah.mitchell@gmail.com</div>
+      <div class="line">☏ +1 (555) 234-5678</div>
+      <div class="line">◎ Instagram @sarahmitchell 👑</div>
+      <div class="line" style="color:var(--ui-mute)">12.4K followers · 847 posts · Follows you</div>
+      <div class="box" style="background:#fff"><h4><span class="spark">✦</span> Customer Intelligence</h4><p>Sarah is a high-value customer who has been shopping with us for over 2 years. She prefers premium products and responds well to personalized recommendations.</p></div>
+      <div class="box row" style="background:#fff"><span>Conversations</span><span>10</span></div>
+      <div class="box row" style="background:#fff"><span>Memories</span><span>5</span></div>
+    </div>
+  </div>
+  <div class="ring" style="left:1472px;top:56px;width:392px;height:800px;border-radius:0 18px 18px 0"></div>
+  <div class="foot"><svg class="mark" aria-label="siena" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120.976 31.324" fill="currentColor"><path id="w" d="M 12.122 31.246 C 9.894 31.246 7.736 30.979 5.649 30.445 C 3.575 29.911 1.692 29.129 0 28.1 L 0 22.882 C 1.551 23.977 3.343 24.823 5.373 25.423 C 7.419 26.022 9.471 26.322 11.53 26.322 C 13.081 26.322 14.252 26.107 15.042 25.677 C 15.831 25.247 16.226 24.654 16.226 23.899 C 16.226 23.351 16.022 22.876 15.613 22.472 C 15.218 22.055 14.442 21.71 13.286 21.436 L 7.764 20.225 C 5.056 19.613 3.103 18.759 1.904 17.665 C 0.719 16.571 0.127 15.203 0.127 13.561 C 0.127 12.154 0.599 10.917 1.544 9.849 C 2.503 8.78 3.871 7.953 5.649 7.367 C 7.44 6.768 9.534 6.468 11.932 6.468 C 14.104 6.468 16.078 6.703 17.855 7.172 C 19.632 7.627 21.163 8.24 22.446 9.008 L 22.446 14.05 C 21.148 13.229 19.66 12.578 17.982 12.096 C 16.304 11.601 14.52 11.353 12.63 11.353 C 10.951 11.353 9.696 11.549 8.864 11.939 C 8.032 12.317 7.616 12.851 7.616 13.542 C 7.616 14.115 7.898 14.571 8.462 14.91 C 9.04 15.248 9.992 15.555 11.318 15.828 L 16.269 16.825 C 18.751 17.294 20.634 18.069 21.917 19.15 C 23.2 20.231 23.842 21.749 23.842 23.703 C 23.842 25.201 23.377 26.523 22.446 27.67 C 21.529 28.803 20.189 29.683 18.426 30.308 C 16.663 30.933 14.562 31.246 12.122 31.246 Z M 30.096 6.409 C 29.278 6.409 28.544 6.273 27.896 5.999 C 27.247 5.712 26.739 5.322 26.372 4.827 C 26.006 4.332 25.822 3.778 25.822 3.166 C 25.822 2.566 26.006 2.026 26.372 1.544 C 26.753 1.062 27.268 0.684 27.917 0.41 C 28.566 0.137 29.292 0 30.096 0 C 30.886 0 31.598 0.137 32.232 0.41 C 32.867 0.684 33.361 1.062 33.713 1.544 C 34.08 2.026 34.263 2.566 34.263 3.166 C 34.263 3.778 34.08 4.332 33.713 4.827 C 33.361 5.322 32.867 5.712 32.232 5.999 C 31.598 6.273 30.886 6.409 30.096 6.409 Z M 26.372 8.227 L 33.735 8.227 L 33.735 30.542 L 26.372 30.542 Z M 63.661 20.049 L 43.69 20.049 C 44.099 21.86 45.143 23.267 46.821 24.27 C 48.5 25.26 50.707 25.755 53.443 25.755 C 55.248 25.755 56.934 25.507 58.499 25.012 C 60.079 24.517 61.517 23.84 62.815 22.98 L 62.815 28.256 C 61.475 29.168 59.825 29.898 57.864 30.445 C 55.918 30.979 53.887 31.246 51.772 31.246 C 48.683 31.246 45.975 30.718 43.648 29.663 C 41.321 28.608 39.523 27.129 38.253 25.227 C 36.998 23.325 36.37 21.143 36.37 18.681 C 36.37 16.388 36.942 14.317 38.084 12.467 C 39.241 10.617 40.898 9.158 43.056 8.09 C 45.228 7.009 47.773 6.468 50.693 6.468 C 53.471 6.468 55.826 6.917 57.759 7.816 C 59.705 8.702 61.172 9.979 62.159 11.646 C 63.16 13.301 63.661 15.281 63.661 17.587 Z M 50.862 11.744 C 48.93 11.744 47.357 12.174 46.144 13.034 C 44.931 13.881 44.156 15.02 43.817 16.453 L 57.441 16.453 C 57.286 14.942 56.637 13.783 55.495 12.975 C 54.367 12.154 52.822 11.744 50.862 11.744 Z M 83.433 6.468 C 85.619 6.468 87.474 6.898 88.997 7.758 C 90.52 8.605 91.677 9.855 92.466 11.51 C 93.27 13.151 93.672 15.151 93.672 17.509 L 93.672 30.542 L 86.31 30.542 L 86.31 19.013 C 86.31 16.734 85.817 15.033 84.829 13.913 C 83.842 12.78 82.347 12.213 80.344 12.213 C 78.92 12.213 77.707 12.487 76.706 13.034 C 75.718 13.581 74.971 14.356 74.463 15.359 C 73.969 16.362 73.723 17.528 73.723 18.857 L 73.723 30.542 L 66.382 30.542 L 66.382 7.426 L 73.68 7.426 L 73.68 12.682 C 74.569 10.585 75.817 9.028 77.425 8.012 C 79.033 6.983 81.035 6.468 83.433 6.468 Z M 107.69 6.468 C 110.469 6.468 112.852 6.911 114.841 7.797 C 116.83 8.683 118.346 9.985 119.389 11.705 C 120.447 13.425 120.976 15.515 120.976 17.978 L 120.976 30.542 L 113.783 30.542 L 113.783 27.416 C 112.923 28.706 111.752 29.683 110.271 30.347 C 108.805 30.998 107.091 31.324 105.131 31.324 C 103.297 31.324 101.689 30.992 100.307 30.327 C 98.924 29.663 97.853 28.758 97.091 27.611 C 96.343 26.452 95.97 25.156 95.97 23.723 C 95.97 22.277 96.358 20.987 97.133 19.854 C 97.923 18.707 99.037 17.815 100.476 17.176 C 101.929 16.525 103.607 16.199 105.511 16.199 C 109.192 16.199 111.943 17.307 113.762 19.521 L 113.762 18.583 C 113.734 17.15 113.367 15.945 112.662 14.968 C 111.957 13.991 110.991 13.262 109.764 12.78 C 108.551 12.285 107.147 12.037 105.554 12.037 C 102.324 12.037 99.559 13.06 97.26 15.105 L 97.26 9.477 C 100.222 7.471 103.699 6.468 107.69 6.468 Z M 108.05 26.986 C 109.15 26.986 110.13 26.83 110.991 26.517 C 111.865 26.204 112.549 25.768 113.043 25.208 C 113.536 24.648 113.783 24.022 113.783 23.332 C 113.783 22.667 113.55 22.075 113.085 21.554 C 112.62 21.019 111.957 20.603 111.096 20.303 C 110.25 20.003 109.27 19.854 108.156 19.854 C 107.07 19.854 106.132 20.003 105.342 20.303 C 104.552 20.603 103.946 21.019 103.523 21.554 C 103.114 22.088 102.909 22.7 102.909 23.39 C 102.909 24.094 103.114 24.719 103.523 25.266 C 103.932 25.814 104.524 26.237 105.3 26.537 C 106.075 26.836 106.992 26.986 108.05 26.986 Z"/></svg><span>Confidential · © Siena Labs Inc.</span><span class="r">04</span></div>
+  <aside class="n">
+    <p>Most help desks are organised around the ticket. Inbox is organised around the person, so Sarah’s Instagram DM and her live chat show up as one relationship.</p>
+    <p>If they ask about other channels: Inbox brings in every channel Siena powers. Native email, SMS and voice are on the roadmap; don’t promise dates.</p>
+  </aside>
+</section>
+
+<!-- 5 · Decision not a ticket -->
+<section class="slide split dark s5">
+  <h2>Siena works out who should take it, <em>and tells them why.</em></h2>
+  <div class="pts" style="top:356px">
+    <div><b>Checks first.</b> Siena looked up order #12847 in Shopify and found one settled payment.</div>
+    <div><b>Doesn’t guess about money.</b> Instead of telling Sarah it’s fine, she brings in billing.</div>
+    <div><b>Assigns and labels it.</b> Lisa Chen in billing gets the conversation, labelled Billing and Urgent, with the reason in the thread.</div>
+    <div><b>Sarah doesn’t repeat herself.</b> Lisa opens a conversation that’s already explained.</div>
+  </div>
+  <div class="ui">
+    <div class="bar"><span class="dot blue"></span><b>Possible double charge</b><span>Live chat</span><span class="tools"><span class="pill">Open</span><span class="pill"><img class="av sm" src="/deck/img/lisa.jpg" alt="">Lisa Chen</span><span class="pill"><i style="background:#e2a23b"></i>Billing</span><span class="pill"><i style="background:#d24b3c"></i>Urgent</span></span></div>
+    <div class="thread" style="padding:30px 36px;gap:26px;font-size:19px">
+      <div class="msg"><img class="av" src="/deck/img/sarah.jpg" alt=""><div><div class="who">Sarah Mitchell <span class="crown">👑</span></div><p>Hi, I think I’ve been charged twice for order #12847. There are two identical charges on my card from the same day.</p></div></div>
+      <div class="msg"><div class="av s">S</div><div><div class="who siena">Siena <span class="pill siena">Siena</span></div><p>Hi Sarah, thanks for flagging it. I can see order #12847 with one settled payment against it, so the second is most likely an authorisation that hasn’t dropped off yet. <mark style="background:rgba(201,162,74,.22);color:inherit;padding:0 2px">I don’t want to tell you your money is safe without someone reading the payment record properly,</mark> so I’m bringing in Lisa from our billing team now. She has everything above, so you won’t need to explain it again.</p>
+        <div class="meta"><span class="pill">🛍 Order #12847 payment</span><span>+1</span></div>
+        <div class="meta"><span>Assigned to</span><span class="pill"><img class="av sm" src="/deck/img/lisa.jpg" alt="">Lisa Chen</span><span>✓</span></div></div></div>
+      <div class="msg"><img class="av" src="/deck/img/sarah.jpg" alt=""><div><div class="who">Sarah Mitchell <span class="crown">👑</span></div><p>Thank you, I’d rather be sure. I’ll wait to hear from her.</p></div></div>
+    </div>
+  </div>
+  <div class="foot"><svg class="mark" aria-label="siena" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120.976 31.324" fill="currentColor"><path id="w" d="M 12.122 31.246 C 9.894 31.246 7.736 30.979 5.649 30.445 C 3.575 29.911 1.692 29.129 0 28.1 L 0 22.882 C 1.551 23.977 3.343 24.823 5.373 25.423 C 7.419 26.022 9.471 26.322 11.53 26.322 C 13.081 26.322 14.252 26.107 15.042 25.677 C 15.831 25.247 16.226 24.654 16.226 23.899 C 16.226 23.351 16.022 22.876 15.613 22.472 C 15.218 22.055 14.442 21.71 13.286 21.436 L 7.764 20.225 C 5.056 19.613 3.103 18.759 1.904 17.665 C 0.719 16.571 0.127 15.203 0.127 13.561 C 0.127 12.154 0.599 10.917 1.544 9.849 C 2.503 8.78 3.871 7.953 5.649 7.367 C 7.44 6.768 9.534 6.468 11.932 6.468 C 14.104 6.468 16.078 6.703 17.855 7.172 C 19.632 7.627 21.163 8.24 22.446 9.008 L 22.446 14.05 C 21.148 13.229 19.66 12.578 17.982 12.096 C 16.304 11.601 14.52 11.353 12.63 11.353 C 10.951 11.353 9.696 11.549 8.864 11.939 C 8.032 12.317 7.616 12.851 7.616 13.542 C 7.616 14.115 7.898 14.571 8.462 14.91 C 9.04 15.248 9.992 15.555 11.318 15.828 L 16.269 16.825 C 18.751 17.294 20.634 18.069 21.917 19.15 C 23.2 20.231 23.842 21.749 23.842 23.703 C 23.842 25.201 23.377 26.523 22.446 27.67 C 21.529 28.803 20.189 29.683 18.426 30.308 C 16.663 30.933 14.562 31.246 12.122 31.246 Z M 30.096 6.409 C 29.278 6.409 28.544 6.273 27.896 5.999 C 27.247 5.712 26.739 5.322 26.372 4.827 C 26.006 4.332 25.822 3.778 25.822 3.166 C 25.822 2.566 26.006 2.026 26.372 1.544 C 26.753 1.062 27.268 0.684 27.917 0.41 C 28.566 0.137 29.292 0 30.096 0 C 30.886 0 31.598 0.137 32.232 0.41 C 32.867 0.684 33.361 1.062 33.713 1.544 C 34.08 2.026 34.263 2.566 34.263 3.166 C 34.263 3.778 34.08 4.332 33.713 4.827 C 33.361 5.322 32.867 5.712 32.232 5.999 C 31.598 6.273 30.886 6.409 30.096 6.409 Z M 26.372 8.227 L 33.735 8.227 L 33.735 30.542 L 26.372 30.542 Z M 63.661 20.049 L 43.69 20.049 C 44.099 21.86 45.143 23.267 46.821 24.27 C 48.5 25.26 50.707 25.755 53.443 25.755 C 55.248 25.755 56.934 25.507 58.499 25.012 C 60.079 24.517 61.517 23.84 62.815 22.98 L 62.815 28.256 C 61.475 29.168 59.825 29.898 57.864 30.445 C 55.918 30.979 53.887 31.246 51.772 31.246 C 48.683 31.246 45.975 30.718 43.648 29.663 C 41.321 28.608 39.523 27.129 38.253 25.227 C 36.998 23.325 36.37 21.143 36.37 18.681 C 36.37 16.388 36.942 14.317 38.084 12.467 C 39.241 10.617 40.898 9.158 43.056 8.09 C 45.228 7.009 47.773 6.468 50.693 6.468 C 53.471 6.468 55.826 6.917 57.759 7.816 C 59.705 8.702 61.172 9.979 62.159 11.646 C 63.16 13.301 63.661 15.281 63.661 17.587 Z M 50.862 11.744 C 48.93 11.744 47.357 12.174 46.144 13.034 C 44.931 13.881 44.156 15.02 43.817 16.453 L 57.441 16.453 C 57.286 14.942 56.637 13.783 55.495 12.975 C 54.367 12.154 52.822 11.744 50.862 11.744 Z M 83.433 6.468 C 85.619 6.468 87.474 6.898 88.997 7.758 C 90.52 8.605 91.677 9.855 92.466 11.51 C 93.27 13.151 93.672 15.151 93.672 17.509 L 93.672 30.542 L 86.31 30.542 L 86.31 19.013 C 86.31 16.734 85.817 15.033 84.829 13.913 C 83.842 12.78 82.347 12.213 80.344 12.213 C 78.92 12.213 77.707 12.487 76.706 13.034 C 75.718 13.581 74.971 14.356 74.463 15.359 C 73.969 16.362 73.723 17.528 73.723 18.857 L 73.723 30.542 L 66.382 30.542 L 66.382 7.426 L 73.68 7.426 L 73.68 12.682 C 74.569 10.585 75.817 9.028 77.425 8.012 C 79.033 6.983 81.035 6.468 83.433 6.468 Z M 107.69 6.468 C 110.469 6.468 112.852 6.911 114.841 7.797 C 116.83 8.683 118.346 9.985 119.389 11.705 C 120.447 13.425 120.976 15.515 120.976 17.978 L 120.976 30.542 L 113.783 30.542 L 113.783 27.416 C 112.923 28.706 111.752 29.683 110.271 30.347 C 108.805 30.998 107.091 31.324 105.131 31.324 C 103.297 31.324 101.689 30.992 100.307 30.327 C 98.924 29.663 97.853 28.758 97.091 27.611 C 96.343 26.452 95.97 25.156 95.97 23.723 C 95.97 22.277 96.358 20.987 97.133 19.854 C 97.923 18.707 99.037 17.815 100.476 17.176 C 101.929 16.525 103.607 16.199 105.511 16.199 C 109.192 16.199 111.943 17.307 113.762 19.521 L 113.762 18.583 C 113.734 17.15 113.367 15.945 112.662 14.968 C 111.957 13.991 110.991 13.262 109.764 12.78 C 108.551 12.285 107.147 12.037 105.554 12.037 C 102.324 12.037 99.559 13.06 97.26 15.105 L 97.26 9.477 C 100.222 7.471 103.699 6.468 107.69 6.468 Z M 108.05 26.986 C 109.15 26.986 110.13 26.83 110.991 26.517 C 111.865 26.204 112.549 25.768 113.043 25.208 C 113.536 24.648 113.783 24.022 113.783 23.332 C 113.783 22.667 113.55 22.075 113.085 21.554 C 112.62 21.019 111.957 20.603 111.096 20.303 C 110.25 20.003 109.27 19.854 108.156 19.854 C 107.07 19.854 106.132 20.003 105.342 20.303 C 104.552 20.603 103.946 21.019 103.523 21.554 C 103.114 22.088 102.909 22.7 102.909 23.39 C 102.909 24.094 103.114 24.719 103.523 25.266 C 103.932 25.814 104.524 26.237 105.3 26.537 C 106.075 26.836 106.992 26.986 108.05 26.986 Z"/></svg><span>Confidential · © Siena Labs Inc.</span><span class="r">05</span></div>
+  <aside class="n">
+    <p>Slow down here. Read Siena’s reply out loud, then Sarah’s: “Thank you, I’d rather be sure.” She’s thanking the AI for handing her to a person.</p>
+    <p>Ask: “How does a double-charge handoff look in your queue today?”</p>
+  </aside>
+</section>
+
+<!-- 6 · Nothing hidden -->
+<section class="slide split s6">
+  <h2>See what Siena did, <em>and why.</em></h2>
+  <div class="pts" style="top:356px">
+    <div><b>Every reply has her reasoning under it.</b> Open it to see what she noticed and what she did about it.</div>
+    <div><b>Every change is logged:</b> who did it, Siena or a person, and by which rule.</div>
+    <div><b>Here, she also made a sale.</b> A sizing comment on Instagram became a reserved medium, in a DM, before Sarah asked twice.</div>
+  </div>
+  <div class="ui">
+    <div class="bar"><span class="dot"></span><b>Sizing restock follow-up</b><span>Instagram DM</span><span class="tools"><span class="pill">Pending</span><span class="pill siena">Siena</span></span></div>
+    <div class="thread" style="padding:24px 32px;gap:18px">
+      <div class="ev">⌁ Assigned to Siena · System · <u>via System default rule</u> · 3:07 PM</div>
+      <div class="msg"><div class="av s">S</div><div><div class="who siena">Siena <span class="pill siena">Siena</span> <small>16 minutes</small></div><p>Hi Sarah! 👋 We saw your comment on our summer collection post asking about sizing, wanted to follow up personally: the medium just restocked and I’ve set one aside for you 💜 Want me to share the link?</p>
+        <div class="reason">⌄&nbsp; Reasoning<ol><li>Sarah commented on the summer collection post asking about medium availability; the size just restocked.</li><li>Opened a proactive DM to let her know and offered to share the purchase link.</li></ol></div></div></div>
+      <div class="ev">⇄ Status changed to Pending · Siena · 3:08 PM</div>
+      <div class="msg"><img class="av" src="/deck/img/sarah.jpg" alt=""><div><div class="who">Sarah Mitchell <span class="crown">👑</span></div><p>Omg yes please!! 😍 I was so bummed it was sold out. Thank you for reaching out!</p></div></div>
+      <div class="ev">◇ Label added · <b>Follow-up</b> · Siena · <u>via Auto-labeling</u> · 3:11 PM</div>
+      <div class="msg"><div class="av s">S</div><div><div class="who siena">Siena <span class="pill siena">Siena</span></div><p>Yay! 🎉 Here you go: siena.cx/shop/summer-dress-medium. It’s reserved for you for the next 24h. Anything else I can help with?</p></div></div>
+    </div>
+  </div>
+  <div class="foot"><svg class="mark" aria-label="siena" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120.976 31.324" fill="currentColor"><path id="w" d="M 12.122 31.246 C 9.894 31.246 7.736 30.979 5.649 30.445 C 3.575 29.911 1.692 29.129 0 28.1 L 0 22.882 C 1.551 23.977 3.343 24.823 5.373 25.423 C 7.419 26.022 9.471 26.322 11.53 26.322 C 13.081 26.322 14.252 26.107 15.042 25.677 C 15.831 25.247 16.226 24.654 16.226 23.899 C 16.226 23.351 16.022 22.876 15.613 22.472 C 15.218 22.055 14.442 21.71 13.286 21.436 L 7.764 20.225 C 5.056 19.613 3.103 18.759 1.904 17.665 C 0.719 16.571 0.127 15.203 0.127 13.561 C 0.127 12.154 0.599 10.917 1.544 9.849 C 2.503 8.78 3.871 7.953 5.649 7.367 C 7.44 6.768 9.534 6.468 11.932 6.468 C 14.104 6.468 16.078 6.703 17.855 7.172 C 19.632 7.627 21.163 8.24 22.446 9.008 L 22.446 14.05 C 21.148 13.229 19.66 12.578 17.982 12.096 C 16.304 11.601 14.52 11.353 12.63 11.353 C 10.951 11.353 9.696 11.549 8.864 11.939 C 8.032 12.317 7.616 12.851 7.616 13.542 C 7.616 14.115 7.898 14.571 8.462 14.91 C 9.04 15.248 9.992 15.555 11.318 15.828 L 16.269 16.825 C 18.751 17.294 20.634 18.069 21.917 19.15 C 23.2 20.231 23.842 21.749 23.842 23.703 C 23.842 25.201 23.377 26.523 22.446 27.67 C 21.529 28.803 20.189 29.683 18.426 30.308 C 16.663 30.933 14.562 31.246 12.122 31.246 Z M 30.096 6.409 C 29.278 6.409 28.544 6.273 27.896 5.999 C 27.247 5.712 26.739 5.322 26.372 4.827 C 26.006 4.332 25.822 3.778 25.822 3.166 C 25.822 2.566 26.006 2.026 26.372 1.544 C 26.753 1.062 27.268 0.684 27.917 0.41 C 28.566 0.137 29.292 0 30.096 0 C 30.886 0 31.598 0.137 32.232 0.41 C 32.867 0.684 33.361 1.062 33.713 1.544 C 34.08 2.026 34.263 2.566 34.263 3.166 C 34.263 3.778 34.08 4.332 33.713 4.827 C 33.361 5.322 32.867 5.712 32.232 5.999 C 31.598 6.273 30.886 6.409 30.096 6.409 Z M 26.372 8.227 L 33.735 8.227 L 33.735 30.542 L 26.372 30.542 Z M 63.661 20.049 L 43.69 20.049 C 44.099 21.86 45.143 23.267 46.821 24.27 C 48.5 25.26 50.707 25.755 53.443 25.755 C 55.248 25.755 56.934 25.507 58.499 25.012 C 60.079 24.517 61.517 23.84 62.815 22.98 L 62.815 28.256 C 61.475 29.168 59.825 29.898 57.864 30.445 C 55.918 30.979 53.887 31.246 51.772 31.246 C 48.683 31.246 45.975 30.718 43.648 29.663 C 41.321 28.608 39.523 27.129 38.253 25.227 C 36.998 23.325 36.37 21.143 36.37 18.681 C 36.37 16.388 36.942 14.317 38.084 12.467 C 39.241 10.617 40.898 9.158 43.056 8.09 C 45.228 7.009 47.773 6.468 50.693 6.468 C 53.471 6.468 55.826 6.917 57.759 7.816 C 59.705 8.702 61.172 9.979 62.159 11.646 C 63.16 13.301 63.661 15.281 63.661 17.587 Z M 50.862 11.744 C 48.93 11.744 47.357 12.174 46.144 13.034 C 44.931 13.881 44.156 15.02 43.817 16.453 L 57.441 16.453 C 57.286 14.942 56.637 13.783 55.495 12.975 C 54.367 12.154 52.822 11.744 50.862 11.744 Z M 83.433 6.468 C 85.619 6.468 87.474 6.898 88.997 7.758 C 90.52 8.605 91.677 9.855 92.466 11.51 C 93.27 13.151 93.672 15.151 93.672 17.509 L 93.672 30.542 L 86.31 30.542 L 86.31 19.013 C 86.31 16.734 85.817 15.033 84.829 13.913 C 83.842 12.78 82.347 12.213 80.344 12.213 C 78.92 12.213 77.707 12.487 76.706 13.034 C 75.718 13.581 74.971 14.356 74.463 15.359 C 73.969 16.362 73.723 17.528 73.723 18.857 L 73.723 30.542 L 66.382 30.542 L 66.382 7.426 L 73.68 7.426 L 73.68 12.682 C 74.569 10.585 75.817 9.028 77.425 8.012 C 79.033 6.983 81.035 6.468 83.433 6.468 Z M 107.69 6.468 C 110.469 6.468 112.852 6.911 114.841 7.797 C 116.83 8.683 118.346 9.985 119.389 11.705 C 120.447 13.425 120.976 15.515 120.976 17.978 L 120.976 30.542 L 113.783 30.542 L 113.783 27.416 C 112.923 28.706 111.752 29.683 110.271 30.347 C 108.805 30.998 107.091 31.324 105.131 31.324 C 103.297 31.324 101.689 30.992 100.307 30.327 C 98.924 29.663 97.853 28.758 97.091 27.611 C 96.343 26.452 95.97 25.156 95.97 23.723 C 95.97 22.277 96.358 20.987 97.133 19.854 C 97.923 18.707 99.037 17.815 100.476 17.176 C 101.929 16.525 103.607 16.199 105.511 16.199 C 109.192 16.199 111.943 17.307 113.762 19.521 L 113.762 18.583 C 113.734 17.15 113.367 15.945 112.662 14.968 C 111.957 13.991 110.991 13.262 109.764 12.78 C 108.551 12.285 107.147 12.037 105.554 12.037 C 102.324 12.037 99.559 13.06 97.26 15.105 L 97.26 9.477 C 100.222 7.471 103.699 6.468 107.69 6.468 Z M 108.05 26.986 C 109.15 26.986 110.13 26.83 110.991 26.517 C 111.865 26.204 112.549 25.768 113.043 25.208 C 113.536 24.648 113.783 24.022 113.783 23.332 C 113.783 22.667 113.55 22.075 113.085 21.554 C 112.62 21.019 111.957 20.603 111.096 20.303 C 110.25 20.003 109.27 19.854 108.156 19.854 C 107.07 19.854 106.132 20.003 105.342 20.303 C 104.552 20.603 103.946 21.019 103.523 21.554 C 103.114 22.088 102.909 22.7 102.909 23.39 C 102.909 24.094 103.114 24.719 103.523 25.266 C 103.932 25.814 104.524 26.237 105.3 26.537 C 106.075 26.836 106.992 26.986 108.05 26.986 Z"/></svg><span>Confidential · © Siena Labs Inc.</span><span class="r">06</span></div>
+  <aside class="n">
+    <p>This slide is about trust and revenue. Anyone on the team can open Siena’s reasoning and the change log. In this thread, a sizing comment turned into a sale without anyone building a campaign.</p>
+    <p>If they ask about QA: every conversation is scored, with intent, knowledge source, action and reason. Show it live in the demo rather than here.</p>
+  </aside>
+</section>
+
+<!-- 7 · Plain English -->
+<section class="slide split s7">
+  <h2>From chaos, <em>order.</em></h2>
+  <p class="sub" style="top:276px">Tell Siena how your team works, in a sentence. She routes and labels every conversation to match.</p>
+  <div class="pts" style="top:446px">
+    <div><b>Contextual routing.</b> Siena reads the message, the channel, the language and her own reasoning, then picks the team.</div>
+    <div><b>Auto-labeling.</b> She reads your label list, adds and removes labels as the conversation changes, and flags labels with no description.</div>
+    <div><b>Ask Siena.</b> In any conversation, ask what happened or what to do next.</div>
+  </div>
+  <div class="ui" style="height:auto">
+    <div class="bar"><b>Settings</b><span>/ Inbox / Routing</span></div>
+    <div style="padding:30px 34px 34px;display:grid;gap:22px">
+      <div class="box" style="padding:0">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:20px 22px;border-bottom:1px solid var(--ui-line)">
+          <div><div style="font-weight:600;font-size:18px">Contextual routing</div><div style="color:var(--ui-mute);font-size:15px">Describe to what team Siena should route conversations.</div></div>
+          <span style="width:46px;height:26px;border-radius:13px;background:#3b7be2;position:relative;display:inline-block"><span style="position:absolute;right:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff"></span></span>
+        </div>
+        <div style="padding:22px;font-size:20px;line-height:1.9">
+          Route billing and refund questions to <span class="pill">⛬ Support</span>. Technical bugs and API issues go to <span class="pill">⛬ Engineering</span>. Partnership and collaboration inquiries go to <span class="pill">⛬ Partnerships</span>.
+        </div>
+        <div style="padding:0 22px 18px;color:var(--ui-mute);font-size:14px;text-align:right">125/1000</div>
+      </div>
+      <div class="box">
+        <div style="display:flex;justify-content:space-between;margin-bottom:14px"><b style="font-weight:600">Conversation labels</b><span style="color:var(--ui-mute);font-size:15px">Auto-labeling on · max 3 per conversation</span></div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <span class="pill"><i style="background:#3b7be2"></i>Shipping</span>
+          <span class="pill"><i style="background:#7a5bd6"></i>Returns</span>
+          <span class="pill"><i style="background:#e2a23b"></i>Billing</span>
+          <span class="pill"><i style="background:#2f9e6a"></i>Subscription</span>
+          <span class="pill"><i style="background:#d24b3c"></i>Urgent</span>
+          <span class="pill"><i style="background:#b03ab8"></i>VIP</span>
+          <span class="pill"><i style="background:#888"></i>Follow-up</span>
+        </div>
+      </div>
+      <div class="box" style="display:flex;gap:12px;align-items:center;color:var(--ui-mute)"><span class="spark">✦</span> Ask about this conversation…</div>
+    </div>
+  </div>
+  <div class="foot"><svg class="mark" aria-label="siena" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120.976 31.324" fill="currentColor"><path id="w" d="M 12.122 31.246 C 9.894 31.246 7.736 30.979 5.649 30.445 C 3.575 29.911 1.692 29.129 0 28.1 L 0 22.882 C 1.551 23.977 3.343 24.823 5.373 25.423 C 7.419 26.022 9.471 26.322 11.53 26.322 C 13.081 26.322 14.252 26.107 15.042 25.677 C 15.831 25.247 16.226 24.654 16.226 23.899 C 16.226 23.351 16.022 22.876 15.613 22.472 C 15.218 22.055 14.442 21.71 13.286 21.436 L 7.764 20.225 C 5.056 19.613 3.103 18.759 1.904 17.665 C 0.719 16.571 0.127 15.203 0.127 13.561 C 0.127 12.154 0.599 10.917 1.544 9.849 C 2.503 8.78 3.871 7.953 5.649 7.367 C 7.44 6.768 9.534 6.468 11.932 6.468 C 14.104 6.468 16.078 6.703 17.855 7.172 C 19.632 7.627 21.163 8.24 22.446 9.008 L 22.446 14.05 C 21.148 13.229 19.66 12.578 17.982 12.096 C 16.304 11.601 14.52 11.353 12.63 11.353 C 10.951 11.353 9.696 11.549 8.864 11.939 C 8.032 12.317 7.616 12.851 7.616 13.542 C 7.616 14.115 7.898 14.571 8.462 14.91 C 9.04 15.248 9.992 15.555 11.318 15.828 L 16.269 16.825 C 18.751 17.294 20.634 18.069 21.917 19.15 C 23.2 20.231 23.842 21.749 23.842 23.703 C 23.842 25.201 23.377 26.523 22.446 27.67 C 21.529 28.803 20.189 29.683 18.426 30.308 C 16.663 30.933 14.562 31.246 12.122 31.246 Z M 30.096 6.409 C 29.278 6.409 28.544 6.273 27.896 5.999 C 27.247 5.712 26.739 5.322 26.372 4.827 C 26.006 4.332 25.822 3.778 25.822 3.166 C 25.822 2.566 26.006 2.026 26.372 1.544 C 26.753 1.062 27.268 0.684 27.917 0.41 C 28.566 0.137 29.292 0 30.096 0 C 30.886 0 31.598 0.137 32.232 0.41 C 32.867 0.684 33.361 1.062 33.713 1.544 C 34.08 2.026 34.263 2.566 34.263 3.166 C 34.263 3.778 34.08 4.332 33.713 4.827 C 33.361 5.322 32.867 5.712 32.232 5.999 C 31.598 6.273 30.886 6.409 30.096 6.409 Z M 26.372 8.227 L 33.735 8.227 L 33.735 30.542 L 26.372 30.542 Z M 63.661 20.049 L 43.69 20.049 C 44.099 21.86 45.143 23.267 46.821 24.27 C 48.5 25.26 50.707 25.755 53.443 25.755 C 55.248 25.755 56.934 25.507 58.499 25.012 C 60.079 24.517 61.517 23.84 62.815 22.98 L 62.815 28.256 C 61.475 29.168 59.825 29.898 57.864 30.445 C 55.918 30.979 53.887 31.246 51.772 31.246 C 48.683 31.246 45.975 30.718 43.648 29.663 C 41.321 28.608 39.523 27.129 38.253 25.227 C 36.998 23.325 36.37 21.143 36.37 18.681 C 36.37 16.388 36.942 14.317 38.084 12.467 C 39.241 10.617 40.898 9.158 43.056 8.09 C 45.228 7.009 47.773 6.468 50.693 6.468 C 53.471 6.468 55.826 6.917 57.759 7.816 C 59.705 8.702 61.172 9.979 62.159 11.646 C 63.16 13.301 63.661 15.281 63.661 17.587 Z M 50.862 11.744 C 48.93 11.744 47.357 12.174 46.144 13.034 C 44.931 13.881 44.156 15.02 43.817 16.453 L 57.441 16.453 C 57.286 14.942 56.637 13.783 55.495 12.975 C 54.367 12.154 52.822 11.744 50.862 11.744 Z M 83.433 6.468 C 85.619 6.468 87.474 6.898 88.997 7.758 C 90.52 8.605 91.677 9.855 92.466 11.51 C 93.27 13.151 93.672 15.151 93.672 17.509 L 93.672 30.542 L 86.31 30.542 L 86.31 19.013 C 86.31 16.734 85.817 15.033 84.829 13.913 C 83.842 12.78 82.347 12.213 80.344 12.213 C 78.92 12.213 77.707 12.487 76.706 13.034 C 75.718 13.581 74.971 14.356 74.463 15.359 C 73.969 16.362 73.723 17.528 73.723 18.857 L 73.723 30.542 L 66.382 30.542 L 66.382 7.426 L 73.68 7.426 L 73.68 12.682 C 74.569 10.585 75.817 9.028 77.425 8.012 C 79.033 6.983 81.035 6.468 83.433 6.468 Z M 107.69 6.468 C 110.469 6.468 112.852 6.911 114.841 7.797 C 116.83 8.683 118.346 9.985 119.389 11.705 C 120.447 13.425 120.976 15.515 120.976 17.978 L 120.976 30.542 L 113.783 30.542 L 113.783 27.416 C 112.923 28.706 111.752 29.683 110.271 30.347 C 108.805 30.998 107.091 31.324 105.131 31.324 C 103.297 31.324 101.689 30.992 100.307 30.327 C 98.924 29.663 97.853 28.758 97.091 27.611 C 96.343 26.452 95.97 25.156 95.97 23.723 C 95.97 22.277 96.358 20.987 97.133 19.854 C 97.923 18.707 99.037 17.815 100.476 17.176 C 101.929 16.525 103.607 16.199 105.511 16.199 C 109.192 16.199 111.943 17.307 113.762 19.521 L 113.762 18.583 C 113.734 17.15 113.367 15.945 112.662 14.968 C 111.957 13.991 110.991 13.262 109.764 12.78 C 108.551 12.285 107.147 12.037 105.554 12.037 C 102.324 12.037 99.559 13.06 97.26 15.105 L 97.26 9.477 C 100.222 7.471 103.699 6.468 107.69 6.468 Z M 108.05 26.986 C 109.15 26.986 110.13 26.83 110.991 26.517 C 111.865 26.204 112.549 25.768 113.043 25.208 C 113.536 24.648 113.783 24.022 113.783 23.332 C 113.783 22.667 113.55 22.075 113.085 21.554 C 112.62 21.019 111.957 20.603 111.096 20.303 C 110.25 20.003 109.27 19.854 108.156 19.854 C 107.07 19.854 106.132 20.003 105.342 20.303 C 104.552 20.603 103.946 21.019 103.523 21.554 C 103.114 22.088 102.909 22.7 102.909 23.39 C 102.909 24.094 103.114 24.719 103.523 25.266 C 103.932 25.814 104.524 26.237 105.3 26.537 C 106.075 26.836 106.992 26.986 108.05 26.986 Z"/></svg><span>Confidential · © Siena Labs Inc.</span><span class="r">07</span></div>
+  <aside class="n">
+    <p>CX leads worry about setup. Show them that routing is one paragraph. The routing text is the demo’s own example; offer to write theirs together in the demo.</p>
+    <p>Don’t promise assignment by skills or history, or AI prioritisation. Neither is live yet. Inside a team, assignment today is round-robin or load-balanced, with capacity limits per agent.</p>
+  </aside>
+</section>
+
+<!-- 8 · What changes -->
+<section class="slide s8">
+  <h2>What changes <em>for your team.</em></h2>
+  <table>
+    <thead><tr><th></th><th>Today</th><th>With Siena Inbox</th></tr></thead>
+    <tbody>
+      <tr><td>Where Siena works</td><td>Inside your help desk, as an add-on</td><td>In the inbox, as a teammate you can assign</td></tr>
+      <tr><td>A handoff</td><td>A ticket in the queue</td><td>The right team, the reason and the whole story</td></tr>
+      <tr><td>What your agent sees</td><td>This ticket</td><td>The customer: every channel, order and conversation</td></tr>
+      <tr><td>Who did what</td><td>Hard to tell</td><td>Every change logged: who, Siena or a person, and how</td></tr>
+      <tr><td>Routing</td><td>Rules, kept up by hand</td><td>A paragraph in plain English</td></tr>
+    </tbody>
+  </table>
+  <div class="foot"><svg class="mark" aria-label="siena" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120.976 31.324" fill="currentColor"><path id="w" d="M 12.122 31.246 C 9.894 31.246 7.736 30.979 5.649 30.445 C 3.575 29.911 1.692 29.129 0 28.1 L 0 22.882 C 1.551 23.977 3.343 24.823 5.373 25.423 C 7.419 26.022 9.471 26.322 11.53 26.322 C 13.081 26.322 14.252 26.107 15.042 25.677 C 15.831 25.247 16.226 24.654 16.226 23.899 C 16.226 23.351 16.022 22.876 15.613 22.472 C 15.218 22.055 14.442 21.71 13.286 21.436 L 7.764 20.225 C 5.056 19.613 3.103 18.759 1.904 17.665 C 0.719 16.571 0.127 15.203 0.127 13.561 C 0.127 12.154 0.599 10.917 1.544 9.849 C 2.503 8.78 3.871 7.953 5.649 7.367 C 7.44 6.768 9.534 6.468 11.932 6.468 C 14.104 6.468 16.078 6.703 17.855 7.172 C 19.632 7.627 21.163 8.24 22.446 9.008 L 22.446 14.05 C 21.148 13.229 19.66 12.578 17.982 12.096 C 16.304 11.601 14.52 11.353 12.63 11.353 C 10.951 11.353 9.696 11.549 8.864 11.939 C 8.032 12.317 7.616 12.851 7.616 13.542 C 7.616 14.115 7.898 14.571 8.462 14.91 C 9.04 15.248 9.992 15.555 11.318 15.828 L 16.269 16.825 C 18.751 17.294 20.634 18.069 21.917 19.15 C 23.2 20.231 23.842 21.749 23.842 23.703 C 23.842 25.201 23.377 26.523 22.446 27.67 C 21.529 28.803 20.189 29.683 18.426 30.308 C 16.663 30.933 14.562 31.246 12.122 31.246 Z M 30.096 6.409 C 29.278 6.409 28.544 6.273 27.896 5.999 C 27.247 5.712 26.739 5.322 26.372 4.827 C 26.006 4.332 25.822 3.778 25.822 3.166 C 25.822 2.566 26.006 2.026 26.372 1.544 C 26.753 1.062 27.268 0.684 27.917 0.41 C 28.566 0.137 29.292 0 30.096 0 C 30.886 0 31.598 0.137 32.232 0.41 C 32.867 0.684 33.361 1.062 33.713 1.544 C 34.08 2.026 34.263 2.566 34.263 3.166 C 34.263 3.778 34.08 4.332 33.713 4.827 C 33.361 5.322 32.867 5.712 32.232 5.999 C 31.598 6.273 30.886 6.409 30.096 6.409 Z M 26.372 8.227 L 33.735 8.227 L 33.735 30.542 L 26.372 30.542 Z M 63.661 20.049 L 43.69 20.049 C 44.099 21.86 45.143 23.267 46.821 24.27 C 48.5 25.26 50.707 25.755 53.443 25.755 C 55.248 25.755 56.934 25.507 58.499 25.012 C 60.079 24.517 61.517 23.84 62.815 22.98 L 62.815 28.256 C 61.475 29.168 59.825 29.898 57.864 30.445 C 55.918 30.979 53.887 31.246 51.772 31.246 C 48.683 31.246 45.975 30.718 43.648 29.663 C 41.321 28.608 39.523 27.129 38.253 25.227 C 36.998 23.325 36.37 21.143 36.37 18.681 C 36.37 16.388 36.942 14.317 38.084 12.467 C 39.241 10.617 40.898 9.158 43.056 8.09 C 45.228 7.009 47.773 6.468 50.693 6.468 C 53.471 6.468 55.826 6.917 57.759 7.816 C 59.705 8.702 61.172 9.979 62.159 11.646 C 63.16 13.301 63.661 15.281 63.661 17.587 Z M 50.862 11.744 C 48.93 11.744 47.357 12.174 46.144 13.034 C 44.931 13.881 44.156 15.02 43.817 16.453 L 57.441 16.453 C 57.286 14.942 56.637 13.783 55.495 12.975 C 54.367 12.154 52.822 11.744 50.862 11.744 Z M 83.433 6.468 C 85.619 6.468 87.474 6.898 88.997 7.758 C 90.52 8.605 91.677 9.855 92.466 11.51 C 93.27 13.151 93.672 15.151 93.672 17.509 L 93.672 30.542 L 86.31 30.542 L 86.31 19.013 C 86.31 16.734 85.817 15.033 84.829 13.913 C 83.842 12.78 82.347 12.213 80.344 12.213 C 78.92 12.213 77.707 12.487 76.706 13.034 C 75.718 13.581 74.971 14.356 74.463 15.359 C 73.969 16.362 73.723 17.528 73.723 18.857 L 73.723 30.542 L 66.382 30.542 L 66.382 7.426 L 73.68 7.426 L 73.68 12.682 C 74.569 10.585 75.817 9.028 77.425 8.012 C 79.033 6.983 81.035 6.468 83.433 6.468 Z M 107.69 6.468 C 110.469 6.468 112.852 6.911 114.841 7.797 C 116.83 8.683 118.346 9.985 119.389 11.705 C 120.447 13.425 120.976 15.515 120.976 17.978 L 120.976 30.542 L 113.783 30.542 L 113.783 27.416 C 112.923 28.706 111.752 29.683 110.271 30.347 C 108.805 30.998 107.091 31.324 105.131 31.324 C 103.297 31.324 101.689 30.992 100.307 30.327 C 98.924 29.663 97.853 28.758 97.091 27.611 C 96.343 26.452 95.97 25.156 95.97 23.723 C 95.97 22.277 96.358 20.987 97.133 19.854 C 97.923 18.707 99.037 17.815 100.476 17.176 C 101.929 16.525 103.607 16.199 105.511 16.199 C 109.192 16.199 111.943 17.307 113.762 19.521 L 113.762 18.583 C 113.734 17.15 113.367 15.945 112.662 14.968 C 111.957 13.991 110.991 13.262 109.764 12.78 C 108.551 12.285 107.147 12.037 105.554 12.037 C 102.324 12.037 99.559 13.06 97.26 15.105 L 97.26 9.477 C 100.222 7.471 103.699 6.468 107.69 6.468 Z M 108.05 26.986 C 109.15 26.986 110.13 26.83 110.991 26.517 C 111.865 26.204 112.549 25.768 113.043 25.208 C 113.536 24.648 113.783 24.022 113.783 23.332 C 113.783 22.667 113.55 22.075 113.085 21.554 C 112.62 21.019 111.957 20.603 111.096 20.303 C 110.25 20.003 109.27 19.854 108.156 19.854 C 107.07 19.854 106.132 20.003 105.342 20.303 C 104.552 20.603 103.946 21.019 103.523 21.554 C 103.114 22.088 102.909 22.7 102.909 23.39 C 102.909 24.094 103.114 24.719 103.523 25.266 C 103.932 25.814 104.524 26.237 105.3 26.537 C 106.075 26.836 106.992 26.986 108.05 26.986 Z"/></svg><span>Confidential · © Siena Labs Inc.</span><span class="r">08</span></div>
+  <aside class="n">
+    <p>They’ll probably screenshot this one for their boss. Fill the left column with what they told you on slide 2.</p>
+  </aside>
+</section>
+
+<!-- 9 · Start -->
+<section class="slide dark s9">
+  <h2>Start with <em>one channel.</em></h2>
+  <div class="steps">
+    <div><span>01</span>Move your first channel into Inbox. Siena keeps answering exactly as she does today.</div>
+    <div><span>02</span>Your team works the handoffs in Inbox, with everything Siena knows beside them.</div>
+    <div><span>03</span>Bring the other channels over as your workflows move across.</div>
+  </div>
+  <p class="price">Inbox is included in Siena Intelligence, <em>at no added cost.</em></p>
+  <div class="foot"><svg class="mark" aria-label="siena" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120.976 31.324" fill="currentColor"><path id="w" d="M 12.122 31.246 C 9.894 31.246 7.736 30.979 5.649 30.445 C 3.575 29.911 1.692 29.129 0 28.1 L 0 22.882 C 1.551 23.977 3.343 24.823 5.373 25.423 C 7.419 26.022 9.471 26.322 11.53 26.322 C 13.081 26.322 14.252 26.107 15.042 25.677 C 15.831 25.247 16.226 24.654 16.226 23.899 C 16.226 23.351 16.022 22.876 15.613 22.472 C 15.218 22.055 14.442 21.71 13.286 21.436 L 7.764 20.225 C 5.056 19.613 3.103 18.759 1.904 17.665 C 0.719 16.571 0.127 15.203 0.127 13.561 C 0.127 12.154 0.599 10.917 1.544 9.849 C 2.503 8.78 3.871 7.953 5.649 7.367 C 7.44 6.768 9.534 6.468 11.932 6.468 C 14.104 6.468 16.078 6.703 17.855 7.172 C 19.632 7.627 21.163 8.24 22.446 9.008 L 22.446 14.05 C 21.148 13.229 19.66 12.578 17.982 12.096 C 16.304 11.601 14.52 11.353 12.63 11.353 C 10.951 11.353 9.696 11.549 8.864 11.939 C 8.032 12.317 7.616 12.851 7.616 13.542 C 7.616 14.115 7.898 14.571 8.462 14.91 C 9.04 15.248 9.992 15.555 11.318 15.828 L 16.269 16.825 C 18.751 17.294 20.634 18.069 21.917 19.15 C 23.2 20.231 23.842 21.749 23.842 23.703 C 23.842 25.201 23.377 26.523 22.446 27.67 C 21.529 28.803 20.189 29.683 18.426 30.308 C 16.663 30.933 14.562 31.246 12.122 31.246 Z M 30.096 6.409 C 29.278 6.409 28.544 6.273 27.896 5.999 C 27.247 5.712 26.739 5.322 26.372 4.827 C 26.006 4.332 25.822 3.778 25.822 3.166 C 25.822 2.566 26.006 2.026 26.372 1.544 C 26.753 1.062 27.268 0.684 27.917 0.41 C 28.566 0.137 29.292 0 30.096 0 C 30.886 0 31.598 0.137 32.232 0.41 C 32.867 0.684 33.361 1.062 33.713 1.544 C 34.08 2.026 34.263 2.566 34.263 3.166 C 34.263 3.778 34.08 4.332 33.713 4.827 C 33.361 5.322 32.867 5.712 32.232 5.999 C 31.598 6.273 30.886 6.409 30.096 6.409 Z M 26.372 8.227 L 33.735 8.227 L 33.735 30.542 L 26.372 30.542 Z M 63.661 20.049 L 43.69 20.049 C 44.099 21.86 45.143 23.267 46.821 24.27 C 48.5 25.26 50.707 25.755 53.443 25.755 C 55.248 25.755 56.934 25.507 58.499 25.012 C 60.079 24.517 61.517 23.84 62.815 22.98 L 62.815 28.256 C 61.475 29.168 59.825 29.898 57.864 30.445 C 55.918 30.979 53.887 31.246 51.772 31.246 C 48.683 31.246 45.975 30.718 43.648 29.663 C 41.321 28.608 39.523 27.129 38.253 25.227 C 36.998 23.325 36.37 21.143 36.37 18.681 C 36.37 16.388 36.942 14.317 38.084 12.467 C 39.241 10.617 40.898 9.158 43.056 8.09 C 45.228 7.009 47.773 6.468 50.693 6.468 C 53.471 6.468 55.826 6.917 57.759 7.816 C 59.705 8.702 61.172 9.979 62.159 11.646 C 63.16 13.301 63.661 15.281 63.661 17.587 Z M 50.862 11.744 C 48.93 11.744 47.357 12.174 46.144 13.034 C 44.931 13.881 44.156 15.02 43.817 16.453 L 57.441 16.453 C 57.286 14.942 56.637 13.783 55.495 12.975 C 54.367 12.154 52.822 11.744 50.862 11.744 Z M 83.433 6.468 C 85.619 6.468 87.474 6.898 88.997 7.758 C 90.52 8.605 91.677 9.855 92.466 11.51 C 93.27 13.151 93.672 15.151 93.672 17.509 L 93.672 30.542 L 86.31 30.542 L 86.31 19.013 C 86.31 16.734 85.817 15.033 84.829 13.913 C 83.842 12.78 82.347 12.213 80.344 12.213 C 78.92 12.213 77.707 12.487 76.706 13.034 C 75.718 13.581 74.971 14.356 74.463 15.359 C 73.969 16.362 73.723 17.528 73.723 18.857 L 73.723 30.542 L 66.382 30.542 L 66.382 7.426 L 73.68 7.426 L 73.68 12.682 C 74.569 10.585 75.817 9.028 77.425 8.012 C 79.033 6.983 81.035 6.468 83.433 6.468 Z M 107.69 6.468 C 110.469 6.468 112.852 6.911 114.841 7.797 C 116.83 8.683 118.346 9.985 119.389 11.705 C 120.447 13.425 120.976 15.515 120.976 17.978 L 120.976 30.542 L 113.783 30.542 L 113.783 27.416 C 112.923 28.706 111.752 29.683 110.271 30.347 C 108.805 30.998 107.091 31.324 105.131 31.324 C 103.297 31.324 101.689 30.992 100.307 30.327 C 98.924 29.663 97.853 28.758 97.091 27.611 C 96.343 26.452 95.97 25.156 95.97 23.723 C 95.97 22.277 96.358 20.987 97.133 19.854 C 97.923 18.707 99.037 17.815 100.476 17.176 C 101.929 16.525 103.607 16.199 105.511 16.199 C 109.192 16.199 111.943 17.307 113.762 19.521 L 113.762 18.583 C 113.734 17.15 113.367 15.945 112.662 14.968 C 111.957 13.991 110.991 13.262 109.764 12.78 C 108.551 12.285 107.147 12.037 105.554 12.037 C 102.324 12.037 99.559 13.06 97.26 15.105 L 97.26 9.477 C 100.222 7.471 103.699 6.468 107.69 6.468 Z M 108.05 26.986 C 109.15 26.986 110.13 26.83 110.991 26.517 C 111.865 26.204 112.549 25.768 113.043 25.208 C 113.536 24.648 113.783 24.022 113.783 23.332 C 113.783 22.667 113.55 22.075 113.085 21.554 C 112.62 21.019 111.957 20.603 111.096 20.303 C 110.25 20.003 109.27 19.854 108.156 19.854 C 107.07 19.854 106.132 20.003 105.342 20.303 C 104.552 20.603 103.946 21.019 103.523 21.554 C 103.114 22.088 102.909 22.7 102.909 23.39 C 102.909 24.094 103.114 24.719 103.523 25.266 C 103.932 25.814 104.524 26.237 105.3 26.537 C 106.075 26.836 106.992 26.986 108.05 26.986 Z"/></svg><span>Confidential · © Siena Labs Inc.</span><span class="r">Let’s open the inbox</span></div>
+  <aside class="n">
+    <p>End on how small the first step is: one channel, and nothing new on the invoice. Then go straight to the live product: “Let’s open the inbox.”</p>
+    <p>Before launch day: confirm the pricing line and the rollout steps with product. Both come from the August town hall.</p>
+  </aside>
+</section>
+
+</div>
+<div class="notes" id="notes"></div>
+<div class="hud" id="hud"></div>
+
+<script>
+if (/[?&]pdf/.test(location.search)) document.documentElement.classList.add('pdf');
+const slides = [...document.querySelectorAll('.slide')];
+const notes = document.getElementById('notes'),
+  hud = document.getElementById('hud');
+let i = Math.max(0, Math.min(slides.length - 1, (parseInt(location.hash.slice(1)) || 1) - 1));
+function fit() {
+  if (document.documentElement.classList.contains('pdf')) return;
+  const s = Math.min(innerWidth / 1920, innerHeight / 1080);
+  slides.forEach((el) => (el.style.transform = `translate(${-960 * s}px, ${-540 * s}px) scale(${s})`));
+}
+function show(n) {
+  i = Math.max(0, Math.min(slides.length - 1, n));
+  slides.forEach((el, k) => el.classList.toggle('on', k === i));
+  const a = slides[i].querySelector('aside.n');
+  notes.innerHTML = `<h5>AE notes · slide ${i + 1} of ${slides.length}</h5>` + (a ? a.innerHTML : '');
+  hud.textContent = `${i + 1} / ${slides.length} · N notes`;
+  history.replaceState(null, '', '#' + (i + 1));
+}
+addEventListener('resize', fit);
+addEventListener('keydown', (e) => {
+  if (['ArrowRight', 'ArrowDown', 'PageDown', ' '].includes(e.key)) {
+    e.preventDefault();
+    show(i + 1);
+  } else if (['ArrowLeft', 'ArrowUp', 'PageUp'].includes(e.key)) {
+    e.preventDefault();
+    show(i - 1);
+  } else if (e.key === 'Home') show(0);
+  else if (e.key === 'End') show(slides.length - 1);
+  else if (e.key.toLowerCase() === 'n') notes.classList.toggle('on');
+  else if (e.key.toLowerCase() === 'f')
+    document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+});
+document.getElementById('deck').addEventListener('click', (e) => {
+  if (!e.target.closest('a')) show(i + (e.clientX > innerWidth / 3 ? 1 : -1));
+});
+fit();
+show(i);
+requestAnimationFrame(() => document.body.classList.add('ready'));
+</script>
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>siena.cx, marked up</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Inter:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* Siena's fonts and colours, as on siena.cx */
+  @font-face {
+    font-family: 'Feature Deck';
+    src: url('fonts/FeatureDeck-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Feature Deck';
+    src: url('fonts/FeatureDeck-LightItalic.woff2') format('woff2');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Feature Deck';
+    src: url('fonts/FeatureDeck-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Tiempos Text';
+    src: url('fonts/TiemposText-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Tiempos Text';
+    src: url('fonts/TiemposText-Italic.woff2') format('woff2');
+    font-weight: 400;
+    font-style: italic;
+    font-display: swap;
+  }
+
+  :root {
+    /* Siena's live tokens (siena.cx) */
+    --ink: #122023;
+    --paper: #f3f0eb;
+    --cream: #efe5d0;
+    --butter: #f2e59a;
+    --coral: #f95040;
+  }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  html,
+  body {
+    background: var(--paper);
+    color: var(--ink);
+  }
+  body {
+    font-family: 'Instrument Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  html {
+    overflow-x: hidden;
+  }
+  @supports (overflow: clip) {
+    html {
+      overflow-x: clip;
+    }
+  }
+  body {
+    background: var(--paper);
+  }
+  .top {
+    padding: clamp(80px, 14vw, 200px) clamp(16px, 5vw, 96px) clamp(64px, 10vw, 140px);
+  }
+  h1 {
+    font-family: 'Feature Deck', serif;
+    font-weight: 300;
+    font-size: clamp(40px, 5vw, 84px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+  }
+  h1 em {
+    font-style: italic;
+  }
+  .top p + p {
+    margin-top: 1em;
+  }
+  .top p {
+    max-width: 620px;
+    margin-top: clamp(28px, 4vw, 56px);
+    font-size: clamp(16px, 1.3vw, 18px);
+    line-height: 1.5;
+  }
+  .label {
+    font:
+      500 11px 'Geist Mono',
+      ui-monospace,
+      monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0 clamp(16px, 5vw, 96px);
+    margin: 8px 0 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .label::before {
+    content: '';
+    width: 18px;
+    height: 2px;
+    background: var(--coral);
+  }
+  ol {
+    list-style: none;
+    padding: 0 clamp(16px, 5vw, 96px) 56px;
+    display: grid;
+    gap: 20px;
+  }
+  li {
+    display: grid;
+    grid-template-columns: minmax(0, 6fr) minmax(0, 5fr);
+    gap: clamp(20px, 3vw, 48px);
+    align-items: start;
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 0 0 1px rgba(18, 32, 35, 0.07);
+  }
+  li img {
+    width: 100%;
+    display: block;
+    border-radius: 10px;
+    box-shadow: 0 0 0 1px rgba(18, 32, 35, 0.08);
+  }
+  .n {
+    font:
+      500 12px 'Geist Mono',
+      ui-monospace,
+      monospace;
+    color: var(--coral);
+  }
+  h2 {
+    font-family: 'Tiempos Text', Georgia, serif;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 1.25;
+    margin: 8px 0 14px;
+  }
+  li p {
+    font-size: 15.5px;
+    line-height: 1.5;
+    margin-bottom: 10px;
+  }
+  li p b {
+    font-weight: 600;
+  }
+  .to {
+    font:
+      500 11px/1.5 'Geist Mono',
+      ui-monospace,
+      monospace;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-top: 14px;
+  }
+
+  .note {
+    margin: 0 clamp(16px, 5vw, 96px) 40px;
+    padding: 16px 20px;
+    border-radius: 12px;
+    background: var(--cream);
+    font-size: 15px;
+    line-height: 1.5;
+    max-width: 860px;
+  }
+  .back {
+    display: inline-block;
+    margin: 0 clamp(16px, 5vw, 96px) 64px;
+    font-weight: 600;
+    border-bottom: 1px solid currentColor;
+  }
+  @media (max-width: 860px) {
+    li {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+  <header class="top">
+    <h1>siena.cx, <em>marked up</em>.</h1>
+    <p>Creative direction built around one idea: knowing every customer. Siena’s support, shopping and social agents share one memory of each customer.</p>
+    <p>The brand already leans classical: a serif with italics, a name taken from a city of painters, an event called Siena Renaissance. I pushed that further. The hero borrows the painted oculus in Mantegna’s Camera degli Sposi, with customers looking down from the rim, and the ones Siena knows get a gold halo, the way Siena’s painters marked the people who mattered most.</p>
+    <p>Below is the current siena.cx, section by section, with what I changed and why.</p>
+  </header>
+
+
+  <div class="label">The current page, section by section</div>
+
+  <ol>
+    <li><img src="current/01.jpg" alt="Current hero: The AI CX operating system for consumer brands, over a blurred gradient portrait">
+      <div><span class="n">01 · Hero</span><h2>The AI CX operating system for consumer brands</h2>
+        <p><b>“Operating system” is category language.</b> Every CX AI company uses it, so it doesn’t set Siena apart. It also undersells the change the brief describes, from one support tool to several agents sharing one memory.</p>
+        <p><b>The gradient and blurred portrait</b> are what most AI startups used from 2023 to 2025. The new hero is a picture you can describe after one look. It shows real people, and the ones Siena knows have a gold halo, the way the painters of Siena marked the people who mattered.</p>
+        <p><b>The Series A banner</b> becomes a small “New” pill inside the hero, so the first screen has a single focus.</p>
+        <p class="to">→ New hero: “AI agents that remember every customer.”</p></div></li>
+
+    <li><img src="current/02.jpg" alt="Current logo marquee and SPANX testimonial carousel, 1 of 11">
+      <div><span class="n">02 · Logos and testimonial carousel</span><h2>The best CX teams work with Siena</h2>
+        <p><b>Every logo stays</b>, with the same headline, in two slow rows running in opposite directions.</p>
+        <p><b>The carousel goes.</b> Few people click through to quote 7 of 11. Eight of the testimonials stay, word for word, in an open set you can read at a glance, and each one links to its story.</p>
+        <p class="to">→ Logos, straight after the manifesto · “In their words.”</p></div></li>
+
+    <li><img src="current/03.jpg" alt="Current section: The CX platform built for agents, with a stock-style phone and chat bubbles">
+      <div><span class="n">03 · Platform</span><h2>The CX platform built for agents</h2>
+        <p>Three bullets of platform language sit next to a hand holding a phone. The points are right, but the section describes them without showing them.</p>
+        <p>They become the three captions in “From chaos, orders.”, and each one points at the part of the Inbox that does it.</p>
+        <p class="to">→ The captions in “From chaos, orders.”</p></div></li>
+
+    <li><img src="current/04.jpg" alt="Current section: Brand intelligence that unlocks growth at scale">
+      <div><span class="n">04 · Intelligence</span><h2>Brand intelligence that unlocks growth at scale</h2>
+        <p>This is the real differentiator, that Siena knows the customer, written as a consulting headline with mock chat bubbles over stock photography.</p>
+        <p>The new page shows it in the product. Owen’s dinner set arrived cracked two days before a wedding. His profile already knows the order, the deadline, that he prefers navy and that he sent a gift to the same address last December.</p>
+        <p class="to">→ “From chaos, orders.”, ending on “Know thy customer.”</p></div></li>
+
+    <li><img src="current/05.jpg" alt="Current section: Your brand voice unified across all channels, on a bright gradient card">
+      <div><span class="n">05 · Brand voice</span><h2>Your brand voice unified across all channels</h2>
+        <p>Brand voice matters, but on its own it’s a feature rather than a reason to buy. It becomes one card in the platform grid: “Make them want to speak to an agent.”</p>
+        <p>A real reply with its voice settings beside it (Warm · Plain English · Never says “ticket”) replaces the Personas card, so you can see the control at work.</p>
+        <p class="to">→ “One memory. Every agent.”</p></div></li>
+
+    <li><img src="current/06.jpg" alt="Current stats card: 79% counter, 98% faster response time, 90% faster resolution time, +94.7% average CSAT">
+      <div><span class="n">06 · Stats</span><h2>Up to 80% · 98% · 90% · +94.7%</h2>
+        <p><b>“Up to 80%” goes in the first screen.</b></p>
+        <p><b>The other three have no baseline.</b> 98% faster than what? 90% faster resolution compared with what? They’re replaced by named numbers from named customers: SPANX 50% at 90%+ CSAT, Kitsch 68%, Coterie 65%, Simple Modern 98% CSAT.</p>
+        <p class="to">→ 80% to the hero · named numbers to “One memory. Every agent.”</p></div></li>
+
+    <li><img src="current/07.jpg" alt="Current case-study carousel: Teams delivering real results with Siena">
+      <div><span class="n">07 · Case studies</span><h2>Teams delivering real results with Siena</h2>
+        <p>Thirteen cards sit in a second carousel, each with a long blog headline. With two carousels on one page, people are unlikely to read either.</p>
+        <p>Each testimonial now links straight to its story, so every case study is one click from its quote.</p>
+        <p class="to">→ “In their words.”, “Read the story →”</p></div></li>
+
+    <li><img src="current/08.jpg" alt="Current section: The agentic commerce platform, six feature cards">
+      <div><span class="n">08 · Agentic commerce</span><h2>The agentic commerce platform</h2>
+        <p>All six cards have equal weight, so nothing stands out. The headline stays, with the subhead “One memory. Every agent.”</p>
+        <p>Four cards, each a job a CX lead recognises: one inbox for the team and the agents, Siena’s voice, comments into customers (with eskiin’s numbers), and “where’s my order?” end to end (with SPANX’s). Social and shopping also get the designed moment in section 3.</p>
+        <p class="to">→ “One memory. Every agent.” · “From chaos, orders.”</p></div></li>
+
+    <li><img src="current/09.jpg" alt="Current integrations grid">
+      <div><span class="n">09 · Integrations</span><h2>Integrate with your existing stack</h2>
+        <p>Buyers need to know it works with Shopify and their help desk. That reassures them, but it won’t make them buy, so the grid closes the platform section as “Works with the stack you already use.” instead of having a section of its own.</p>
+        <p class="to">→ The end of “One memory. Every agent.”</p></div></li>
+
+    <li><img src="current/10.jpg" alt="Current closing call to action: See how fast-growing brands scale with Siena, and the footer">
+      <div><span class="n">10 · Closing CTA</span><h2>See how fast-growing brands scale with Siena</h2>
+        <p>This one stays as it is. The line is clear, the art is theirs, and it seems to perform well. The founders’ line, <b>“Humanize the internet.”</b>, appears where the hero flight lands instead.</p>
+        <p class="to">→ Unchanged, at the end of the page</p></div></li>
+  </ol>
+
+  <p class="note"><b>Before this goes live:</b> the card “Your team and your agents, in one inbox.” in “One memory. Every agent.” shows Siena Inbox, which hasn’t launched. Keep it for launch day, and until then swap it for the Customer Intelligence profile.</p>
+  <a class="back" href="index.html">← Back to the new homepage</a>
+</body>
+</html>
